@@ -14,19 +14,29 @@ The optimizer simulates thousands of tournament outcomes, generates opponent bra
 | **FiveThirtyEight** | Historical model probabilities | 2017-2023 |
 | **mRchmadness** | Historical ESPN pick distributions | 2016-2025 |
 
+## Installation
+
+Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/).
+
+```bash
+git clone https://github.com/philadamson93/1shiningbracket.git
+cd 1shiningbracket
+uv sync
+```
+
 ## Usage
 
 ### Command Line
 
 ```bash
 # Refresh ESPN public pick data
-python3 src/scrape_espn_picks.py
+uv run python3 src/scrape_espn_picks.py
 
 # Generate brackets (quick ~5s, for iteration)
-python3 src/bracket_maker.py --sims 200
+uv run python3 src/bracket_maker.py --sims 200
 
 # Generate brackets (production ~5 min)
-python3 src/bracket_maker.py --sims 10000
+uv run python3 src/bracket_maker.py --sims 10000
 
 # Output: output/final_brackets.json (10 brackets, one per pool)
 ```
@@ -34,8 +44,8 @@ python3 src/bracket_maker.py --sims 10000
 ### Streamlit UI
 
 ```bash
-pip install streamlit pandas
-streamlit run ui/app.py
+uv sync --extra ui
+uv run streamlit run ui/app.py
 ```
 
 The UI lets you:
@@ -45,7 +55,7 @@ The UI lets you:
 - Explore the full leverage table (all 64 teams × 6 rounds)
 - Run what-if analysis (flip any pick, see the EV impact)
 - Compare brackets side-by-side in portfolio view
-- Load previously saved brackets from `final_brackets.json`
+- Load previously saved brackets from `output/final_brackets.json`
 
 ### Inputs
 
@@ -75,6 +85,8 @@ The UI lets you:
 5. **Portfolio optimization**: each bracket maximizes marginal log-wealth contribution given prior brackets (Kelly criterion + Haugh & Singal 2021 greedy submodular selection)
 
 Different pool sizes naturally produce different brackets — small pools favor chalk, large pools favor leverage (contrarian picks where model probability exceeds public pick rate).
+
+The `--wealth-base` parameter controls the tradeoff between "maximize total EV" and "win at least one pool." At 1.0, the optimizer stacks leverage-heavy longshots. At 0.3 (default), it covers probable outcomes first, then adds leverage plays — producing a mix of 1-seed favorites and contrarian picks across the portfolio.
 
 ## Key Files
 
