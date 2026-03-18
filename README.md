@@ -59,12 +59,27 @@ The UI lets you:
 
 ### Inputs
 
-**Pool configuration** (edit `POOLS` list in `src/bracket_maker.py` or use the UI sidebar):
+**Pool configuration** — edit `pools.toml` in the project root:
 
-| Parameter | Description | Default |
-|-----------|-------------|---------|
+```toml
+# Each [[pool]] entry generates one optimized bracket.
+
+[[pool]]
+name = "My Pool"
+field_size = 250
+payout = [50, 15, 10, 7, 5, 2, 2, 1, 1]
+
+[[pool]]
+name = "Work Pool WTA"
+field_size = 100
+payout = [100]
+```
+
+| Field | Description | Default |
+|-------|-------------|---------|
+| `name` | Label for this pool | "My Pool" |
 | `field_size` | Number of entries in your pool | 250 |
-| `payout` | Prize distribution by finishing position | 60/20/10/5/3/2 |
+| `payout` | Prize % by finishing position (1st, 2nd, ...) | [50, 15, 10, 7, 5, 2, 2, 1, 1] |
 
 **Model parameters** (CLI flags or UI sidebar):
 

@@ -4,16 +4,20 @@ Hill-climbing bracket generator with Kelly portfolio optimization.
 Generates one optimized bracket per pool. Uses log-wealth (Kelly criterion)
 portfolio objective: each bracket maximizes marginal E[log(wealth_base + total_payout)].
 
+Pool configuration is read from pools.toml in the project root.
+
 Usage:
-    python3 bracket_maker.py                # Quick (M=200, ~5s)
-    python3 bracket_maker.py --sims 10000   # Production (~4 min)
+    python3 src/bracket_maker.py                # Quick (M=200, ~5s)
+    python3 src/bracket_maker.py --sims 10000   # Production (~4 min)
 """
 
 import argparse
+import os
 import random
 import json
 import time
 from collections import defaultdict
+from pathlib import Path
 
 from data_loader import load_year_data
 from sim_engine import (
@@ -28,24 +32,42 @@ from sim_engine import (
 # POOL CONFIGURATION
 # =============================================================================
 
+# Named presets for use in pools.toml or as fallback
 PAYOUT_STEEP = {1: 0.60, 2: 0.20, 3: 0.075, 4: 0.05, 5: 0.025,
                 6: 0.01, 7: 0.01, 8: 0.01, 9: 0.01}
 PAYOUT_WTA = {1: 1.00}
 PAYOUT_SPREAD = {1: 0.50, 2: 0.15, 3: 0.10, 4: 0.07, 5: 0.05,
                  6: 0.02, 7: 0.02, 8: 0.01, 9: 0.01}
 
-POOLS = [
-    {"name": "100-A",   "field_size": 100, "payout": PAYOUT_STEEP},
-    {"name": "100-B",   "field_size": 100, "payout": PAYOUT_STEEP},
-    {"name": "200-WTA", "field_size": 200, "payout": PAYOUT_WTA},
-    {"name": "200-WTB", "field_size": 200, "payout": PAYOUT_WTA},
-    {"name": "125",     "field_size": 125, "payout": PAYOUT_SPREAD},
-    {"name": "250",     "field_size": 250, "payout": PAYOUT_SPREAD},
-    {"name": "400",     "field_size": 400, "payout": PAYOUT_SPREAD},
-    {"name": "120-A",   "field_size": 120, "payout": PAYOUT_SPREAD},
-    {"name": "120-B",   "field_size": 120, "payout": PAYOUT_SPREAD},
-    {"name": "120-C",   "field_size": 120, "payout": PAYOUT_SPREAD},
+DEFAULT_POOLS = [
+    {"name": "My Pool", "field_size": 250, "payout": PAYOUT_SPREAD},
 ]
+
+
+def load_pools(config_path="pools.toml"):
+    """Load pool configuration from pools.toml. Falls back to DEFAULT_POOLS."""
+    if not os.path.exists(config_path):
+        return DEFAULT_POOLS
+
+    try:
+        import tomllib
+    except ImportError:
+        import tomli as tomllib
+
+    with open(config_path, "rb") as f:
+        config = tomllib.load(f)
+
+    pools = []
+    for entry in config.get("pool", []):
+        payout_list = entry.get("payout", [50, 15, 10, 7, 5, 2, 2, 1, 1])
+        payout = {i + 1: v / 100.0 for i, v in enumerate(payout_list)}
+        pools.append({
+            "name": entry.get("name", f"Pool {len(pools) + 1}"),
+            "field_size": entry.get("field_size", 250),
+            "payout": payout,
+        })
+
+    return pools if pools else DEFAULT_POOLS
 
 # =============================================================================
 # SIMULATION PARAMETERS
@@ -188,6 +210,8 @@ def parse_args():
     parser.add_argument("--wealth-base", type=float, default=WEALTH_BASE)
     parser.add_argument("--seed", type=int, default=RANDOM_SEED)
     parser.add_argument("--output", type=str, default="output/final_brackets.json")
+    parser.add_argument("--pools", type=str, default="pools.toml",
+                        help="Path to pool configuration file")
     return parser.parse_args()
 
 
@@ -196,14 +220,16 @@ def main():
     if args.seed is not None:
         random.seed(args.seed)
 
+    pools = load_pools(args.pools)
+
     print("=" * 95)
     print("MARCH MADNESS BRACKET MAKER — Kelly Portfolio Optimizer")
     print("=" * 95)
-    print(f"Pools: {len(POOLS)} | Sims: {args.sims} | Sigma: {args.sigma} | "
+    print(f"Pools: {len(pools)} | Sims: {args.sims} | Sigma: {args.sigma} | "
           f"ModelWeight: {args.model_weight} | WealthBase: {args.wealth_base}")
 
     print(f"\nPool configuration:")
-    for p in POOLS:
+    for p in pools:
         payout_str = "/".join(f"{v*100:.0f}" for v in
                               sorted(p['payout'].values(), reverse=True))
         print(f"  {p['name']:<12} N={p['field_size']:<5} Payout: {payout_str}")
@@ -235,7 +261,7 @@ def main():
         print(f"  {team:<16} {count}/{args.sims} ({count/args.sims*100:.1f}%)")
 
     print(f"\nOptimizing portfolio...")
-    results = build_portfolio(POOLS, our_probs, public, game_tree,
+    results = build_portfolio(pools, our_probs, public, game_tree,
                               precomputed, args.wealth_base)
 
     print_summary(results, our_probs, public, game_tree)

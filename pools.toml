@@ -1,0 +1,23 @@
+# Pool configuration for bracket generation.
+# Each [[pool]] entry generates one optimized bracket.
+# Default: 1 bracket for a 250-person pool with spread payout.
+#
+# To add more brackets, copy a [[pool]] block and adjust.
+# Payout is a list of percentages by finishing position (1st, 2nd, ...).
+
+[[pool]]
+name = "My Pool"
+field_size = 250
+payout = [50, 15, 10, 7, 5, 2, 2, 1, 1]
+
+# Examples — uncomment to add more brackets:
+#
+# [[pool]]
+# name = "Work Pool"
+# field_size = 100
+# payout = [60, 20, 7.5, 5, 2.5, 1, 1, 1, 1]
+#
+# [[pool]]
+# name = "Big Pool WTA"
+# field_size = 500
+# payout = [100]
