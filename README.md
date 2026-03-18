@@ -2,7 +2,7 @@
 
 Generate optimized brackets for NCAA tournament pools using simulation-based portfolio optimization.
 
-The optimizer simulates thousands of tournament outcomes, generates opponent brackets from ESPN public pick data (172M+ brackets), and hill-climbs each of your bracket's 63 game picks to maximize expected payout in your specific pool. Multiple brackets across pools are diversified using a Kelly (log-wealth) portfolio objective — naturally allocating contrarian picks to large pools and chalk to small ones.
+The optimizer blends analytical team-strength probabilities from [Neil Paine's 6-model composite](https://neilpaine.substack.com/p/2026-ncaa-tournament-forecast) with DraftKings market odds, simulates thousands of tournament outcomes, generates opponent brackets from ESPN public pick data (172M+ brackets), and hill-climbs each of your bracket's 63 game picks to maximize expected payout in your specific pool. Multiple brackets across pools are diversified using a Kelly (log-wealth) portfolio objective — naturally allocating contrarian picks to large pools and chalk to small ones.
 
 ## Data Sources
 
