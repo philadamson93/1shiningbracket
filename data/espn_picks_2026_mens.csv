@@ -1,0 +1,385 @@
+team,abbrev,seed,round,pick_pct,pick_count
+Illinois Fighting Illini,ILL,3,R1,92.2382,9904005
+Pennsylvania Quakers,PENN,14,R1,7.7618,833416
+UConn Huskies,CONN,2,R1,96.3613,10346716
+Furman Paladins,FUR,15,R1,3.6387,390705
+Tennessee Volunteers,TENN,6,R1,82.9366,8905257
+M-OH/SMU,M-OH/SMU,11,R1,17.0634,1832164
+Kentucky Wildcats,UK,7,R2,16.2436,1744139
+Santa Clara Broncos,SCU,10,R2,4.1969,450643
+Iowa State Cyclones,ISU,2,R2,77.9748,8372479
+Tennessee State Tigers,TNST,15,R2,1.5848,170162
+Wisconsin Badgers,WIS,5,R2,33.7393,3622727
+High Point Panthers,HPU,12,R2,3.3699,361836
+Arkansas Razorbacks,ARK,4,R2,60.1822,6462020
+Hawai'i Rainbow Warriors,HAW,13,R2,2.7087,290840
+UCLA Bruins,UCLA,7,R2,15.9943,1717374
+UCF Knights,UCF,10,R2,4.1687,447609
+UConn Huskies,CONN,2,R2,78.3256,8410147
+Furman Paladins,FUR,15,R2,1.5115,162293
+Duke Blue Devils,DUKE,1,R1,98.0657,10529733
+Siena Saints,SIE,16,R1,1.9343,207690
+Michigan Wolverines,MICH,1,E8,56.6612,6083955
+Howard Bison,HOW,16,E8,0.5133,55113
+Georgia Bulldogs,UGA,8,E8,0.733,78706
+Saint Louis Billikens,SLU,9,E8,0.5731,61537
+Texas Tech Red Raiders,TTU,5,E8,2.7387,294065
+Akron Zips,AKR,12,E8,0.2684,28820
+Alabama Crimson Tide,ALA,4,E8,3.9218,421102
+Hofstra Pride,HOF,13,E8,0.1832,19673
+Tennessee Volunteers,TENN,6,E8,2.3647,253912
+M-OH/SMU,M-OH/SMU,11,E8,0.4099,44017
+Virginia Cavaliers,UVA,3,E8,8.4315,905322
+Wright State Raiders,WRST,14,E8,0.1433,15387
+Kentucky Wildcats,UK,7,E8,2.0148,216334
+Santa Clara Broncos,SCU,10,E8,0.3411,36627
+Iowa State Cyclones,ISU,2,E8,20.4597,2196842
+Tennessee State Tigers,TNST,15,E8,0.2422,26011
+Virginia Cavaliers,UVA,3,R1,94.8907,10188819
+Wright State Raiders,WRST,14,R1,5.1093,548602
+Purdue Boilermakers,PUR,2,R1,96.3322,10343600
+Queens University Royals,QUC,15,R1,3.6678,393823
+Arkansas Razorbacks,ARK,4,R1,92.1683,9896495
+Hawai'i Rainbow Warriors,HAW,13,R1,7.8317,840928
+Arizona Wildcats,ARIZ,1,S16,73.2265,7862642
+Long Island University Sharks,LIU,16,S16,0.8952,96126
+Villanova Wildcats,VILL,8,S16,2.1765,233695
+Utah State Aggies,USU,9,S16,1.0187,109379
+Wisconsin Badgers,WIS,5,S16,6.7639,726267
+High Point Panthers,HPU,12,S16,0.5682,61012
+Arkansas Razorbacks,ARK,4,S16,14.6898,1577310
+Hawai'i Rainbow Warriors,HAW,13,S16,0.6612,70992
+Arizona Wildcats,ARIZ,1,R2,91.4774,9822318
+Long Island University Sharks,LIU,16,R2,1.3684,146926
+Villanova Wildcats,VILL,8,R2,4.467,479637
+Utah State Aggies,USU,9,R2,2.6873,288542
+Tennessee Volunteers,TENN,6,R2,29.4198,3158929
+M-OH/SMU,M-OH/SMU,11,R2,4.429,475560
+Virginia Cavaliers,UVA,3,R2,64.4844,6923966
+Wright State Raiders,WRST,14,R2,1.6668,178968
+Louisville Cardinals,LOU,6,R2,17.1665,1843243
+South Florida Bulls,USF,11,R2,7.2673,780322
+Michigan State Spartans,MSU,3,R2,73.7473,7918561
+North Dakota State Bison,NDSU,14,R2,1.8188,195297
+Louisville Cardinals,LOU,6,R1,62.3456,6694306
+South Florida Bulls,USF,11,R1,37.6544,4043117
+Arizona Wildcats,ARIZ,1,E8,56.0011,6013076
+Long Island University Sharks,LIU,16,E8,0.6871,73780
+Villanova Wildcats,VILL,8,E8,0.819,87939
+Utah State Aggies,USU,9,E8,0.3544,38050
+Wisconsin Badgers,WIS,5,E8,3.0886,331638
+High Point Panthers,HPU,12,E8,0.2199,23613
+Arkansas Razorbacks,ARK,4,E8,9.4824,1018161
+Hawai'i Rainbow Warriors,HAW,13,E8,0.2849,30592
+BYU Cougars,BYU,6,E8,2.7365,293826
+Texas Longhorns,TEX,11,E8,0.3088,33157
+Gonzaga Bulldogs,GONZ,3,E8,9.0701,973900
+Kennesaw State Owls,KENN,14,E8,0.1481,15899
+Miami Hurricanes,MIA,7,E8,1.3992,150240
+Missouri Tigers,MIZ,10,E8,0.4186,44944
+Purdue Boilermakers,PUR,2,E8,14.7704,1585960
+Queens University Royals,QUC,15,E8,0.2109,22648
+Vanderbilt Commodores,VAN,5,R1,83.1299,8926005
+McNeese Cowboys,MCN,12,R1,16.8701,1811418
+Alabama Crimson Tide,ALA,4,R1,89.1752,9575116
+Hofstra Pride,HOF,13,R1,10.8248,1162307
+Gonzaga Bulldogs,GONZ,3,R1,95.0318,10203969
+Kennesaw State Owls,KENN,14,R1,4.9682,533454
+North Carolina Tar Heels,UNC,6,S16,7.8359,841375
+VCU Rams,VCU,11,S16,0.9513,102140
+Illinois Fighting Illini,ILL,3,S16,24.1636,2594549
+Pennsylvania Quakers,PENN,14,S16,0.7075,75970
+Saint Mary's Gaels,SMC,7,S16,2.4496,263023
+Texas A&M Aggies,TA&M,10,S16,1.9001,204020
+Houston Cougars,HOU,2,S16,61.1419,6565069
+Idaho Vandals,IDHO,15,S16,0.8501,91277
+St. John's Red Storm,SJU,5,R1,88.3537,9486908
+Northern Iowa Panthers,UNI,12,R1,11.6463,1250515
+Florida Gators,FLA,1,E8,38.718,4157316
+PV/LEH,PV/LEH,16,E8,0.4856,52145
+Clemson Tigers,CLEM,8,E8,0.7195,77256
+Iowa Hawkeyes,IOWA,9,E8,0.6612,70995
+Vanderbilt Commodores,VAN,5,E8,4.4685,479802
+McNeese Cowboys,MCN,12,E8,0.3335,35811
+Nebraska Cornhuskers,NEB,4,E8,2.758,296136
+Troy Trojans,TROY,13,E8,0.1768,18987
+North Carolina Tar Heels,UNC,6,E8,3.0483,327306
+VCU Rams,VCU,11,E8,0.2835,30437
+Illinois Fighting Illini,ILL,3,E8,11.0974,1191571
+Pennsylvania Quakers,PENN,14,E8,0.279,29960
+Saint Mary's Gaels,SMC,7,E8,0.7456,80054
+Texas A&M Aggies,TA&M,10,E8,0.6295,67593
+Houston Cougars,HOU,2,E8,35.3561,3796329
+Idaho Vandals,IDHO,15,E8,0.2396,25725
+North Carolina Tar Heels,UNC,6,R1,68.5338,7358767
+VCU Rams,VCU,11,R1,31.4662,3378656
+Nebraska Cornhuskers,NEB,4,R1,86.7719,9317063
+Troy Trojans,TROY,13,R1,13.2281,1420360
+Miami Hurricanes,MIA,7,R1,60.6806,6515533
+Missouri Tigers,MIZ,10,R1,39.3194,4221890
+Wisconsin Badgers,WIS,5,R1,82.6618,8875751
+High Point Panthers,HPU,12,R1,17.3382,1861672
+Texas Tech Red Raiders,TTU,5,R2,40.3472,4332248
+Akron Zips,AKR,12,R2,7.0136,753081
+Alabama Crimson Tide,ALA,4,R2,49.7877,5345916
+Hofstra Pride,HOF,13,R2,2.8515,306178
+Saint Mary's Gaels,SMC,7,R2,6.9065,741580
+Texas A&M Aggies,TA&M,10,R2,5.5557,596542
+Houston Cougars,HOU,2,R2,86.0867,9243496
+Idaho Vandals,IDHO,15,R2,1.451,155805
+St. John's Red Storm,SJU,5,R2,50.9741,5473303
+Northern Iowa Panthers,UNI,12,R2,2.5101,269523
+Kansas Jayhawks,KU,4,R2,44.7244,4802253
+California Baptist Lancers,CBU,13,R2,1.7913,192344
+Kansas Jayhawks,KU,4,R1,93.3152,10019645
+California Baptist Lancers,CBU,13,R1,6.6848,717778
+Duke Blue Devils,DUKE,1,Championship,24.3156,2610867
+Siena Saints,SIE,16,Championship,0.1438,15444
+Ohio State Buckeyes,OSU,8,Championship,0.3239,34781
+TCU Horned Frogs,TCU,9,Championship,0.0744,7986
+St. John's Red Storm,SJU,5,Championship,1.1414,122555
+Northern Iowa Panthers,UNI,12,Championship,0.0387,4156
+Kansas Jayhawks,KU,4,Championship,1.0427,111962
+California Baptist Lancers,CBU,13,Championship,0.0286,3070
+Louisville Cardinals,LOU,6,Championship,0.192,20620
+South Florida Bulls,USF,11,Championship,0.0685,7353
+Michigan State Spartans,MSU,3,Championship,1.7668,189714
+North Dakota State Bison,NDSU,14,Championship,0.0344,3697
+UCLA Bruins,UCLA,7,Championship,0.238,25551
+UCF Knights,UCF,10,Championship,0.047,5050
+UConn Huskies,CONN,2,Championship,3.6315,389934
+Furman Paladins,FUR,15,Championship,0.0363,3897
+Florida Gators,FLA,1,Championship,7.5372,809297
+PV/LEH,PV/LEH,16,Championship,0.0616,6612
+Clemson Tigers,CLEM,8,Championship,0.1204,12927
+Iowa Hawkeyes,IOWA,9,Championship,0.1193,12813
+Vanderbilt Commodores,VAN,5,Championship,0.4409,47339
+McNeese Cowboys,MCN,12,Championship,0.0749,8047
+Nebraska Cornhuskers,NEB,4,Championship,0.459,49282
+Troy Trojans,TROY,13,Championship,0.031,3327
+North Carolina Tar Heels,UNC,6,Championship,0.5601,60141
+VCU Rams,VCU,11,Championship,0.0395,4239
+Illinois Fighting Illini,ILL,3,Championship,1.362,146241
+Pennsylvania Quakers,PENN,14,Championship,0.0549,5893
+Saint Mary's Gaels,SMC,7,Championship,0.0745,8000
+Texas A&M Aggies,TA&M,10,Championship,0.1162,12480
+Houston Cougars,HOU,2,Championship,6.0345,647947
+Idaho Vandals,IDHO,15,Championship,0.0433,4647
+Arizona Wildcats,ARIZ,1,Championship,20.1494,2163527
+Long Island University Sharks,LIU,16,Championship,0.3027,32507
+Villanova Wildcats,VILL,8,Championship,0.159,17069
+Utah State Aggies,USU,9,Championship,0.063,6768
+Wisconsin Badgers,WIS,5,Championship,0.5849,62805
+High Point Panthers,HPU,12,Championship,0.0449,4822
+Arkansas Razorbacks,ARK,4,Championship,2.0854,223914
+Hawai'i Rainbow Warriors,HAW,13,Championship,0.077,8272
+BYU Cougars,BYU,6,Championship,0.5432,58330
+Texas Longhorns,TEX,11,Championship,0.0811,8705
+Gonzaga Bulldogs,GONZ,3,Championship,1.6852,180952
+Kennesaw State Owls,KENN,14,Championship,0.0347,3727
+Miami Hurricanes,MIA,7,Championship,0.2609,28017
+Missouri Tigers,MIZ,10,Championship,0.0914,9813
+Purdue Boilermakers,PUR,2,Championship,3.0378,326183
+Queens University Royals,QUC,15,Championship,0.0434,4657
+Michigan Wolverines,MICH,1,Championship,14.249,1529974
+Howard Bison,HOW,16,Championship,0.0834,8952
+Georgia Bulldogs,UGA,8,Championship,0.1595,17126
+Saint Louis Billikens,SLU,9,Championship,0.1013,10873
+Texas Tech Red Raiders,TTU,5,Championship,0.3397,36475
+Akron Zips,AKR,12,Championship,0.0552,5922
+Alabama Crimson Tide,ALA,4,Championship,0.5804,62317
+Hofstra Pride,HOF,13,Championship,0.0349,3744
+Tennessee Volunteers,TENN,6,Championship,0.3739,40146
+M-OH/SMU,M-OH/SMU,11,Championship,0.1069,11476
+Virginia Cavaliers,UVA,3,Championship,1.0427,111961
+Wright State Raiders,WRST,14,Championship,0.0283,3041
+Kentucky Wildcats,UK,7,Championship,0.4433,47598
+Santa Clara Broncos,SCU,10,Championship,0.0493,5295
+Iowa State Cyclones,ISU,2,Championship,2.8057,301257
+Tennessee State Tigers,TNST,15,Championship,0.0496,5329
+Clemson Tigers,CLEM,8,R1,41.7679,4484799
+Iowa Hawkeyes,IOWA,9,R1,58.2321,6252624
+Iowa State Cyclones,ISU,2,R1,95.8731,10294298
+Tennessee State Tigers,TNST,15,R1,4.1269,443123
+BYU Cougars,BYU,6,R1,79.9992,8589856
+Texas Longhorns,TEX,11,R1,20.0008,2147567
+Arizona Wildcats,ARIZ,1,R1,97.4442,10462997
+Long Island University Sharks,LIU,16,R1,2.5558,274426
+Florida Gators,FLA,1,S16,72.6069,7796108
+PV/LEH,PV/LEH,16,S16,0.6228,66878
+Clemson Tigers,CLEM,8,S16,1.9386,208153
+Iowa Hawkeyes,IOWA,9,S16,2.0477,219872
+Vanderbilt Commodores,VAN,5,S16,13.6309,1463603
+McNeese Cowboys,MCN,12,S16,0.8106,87035
+Nebraska Cornhuskers,NEB,4,S16,7.8562,843554
+Troy Trojans,TROY,13,S16,0.4863,52220
+Michigan Wolverines,MICH,1,R2,92.0701,9885955
+Howard Bison,HOW,16,R2,0.9867,105951
+Georgia Bulldogs,UGA,8,R2,3.8894,417625
+Saint Louis Billikens,SLU,9,R2,3.0537,327892
+North Carolina Tar Heels,UNC,6,R2,24.1574,2593879
+VCU Rams,VCU,11,R2,5.8112,623973
+Illinois Fighting Illini,ILL,3,R2,67.2162,7217293
+Pennsylvania Quakers,PENN,14,R2,2.8152,302278
+Arizona Wildcats,ARIZ,1,F4,36.2018,3887143
+Long Island University Sharks,LIU,16,F4,0.4626,49674
+Villanova Wildcats,VILL,8,F4,0.3682,39540
+Utah State Aggies,USU,9,F4,0.1373,14743
+Wisconsin Badgers,WIS,5,F4,1.2008,128939
+High Point Panthers,HPU,12,F4,0.0931,9997
+Arkansas Razorbacks,ARK,4,F4,4.3562,467743
+Hawai'i Rainbow Warriors,HAW,13,F4,0.1487,15969
+BYU Cougars,BYU,6,F4,1.1578,124320
+Texas Longhorns,TEX,11,F4,0.1428,15333
+Gonzaga Bulldogs,GONZ,3,F4,4.1229,442696
+Kennesaw State Owls,KENN,14,F4,0.0669,7182
+Miami Hurricanes,MIA,7,F4,0.5879,63126
+Missouri Tigers,MIZ,10,F4,0.1725,18517
+Purdue Boilermakers,PUR,2,F4,6.9977,751378
+Queens University Royals,QUC,15,F4,0.0907,9734
+Michigan Wolverines,MICH,1,F4,28.7301,3084876
+Howard Bison,HOW,16,F4,0.1686,18098
+Georgia Bulldogs,UGA,8,F4,0.3014,32364
+Saint Louis Billikens,SLU,9,F4,0.2009,21576
+Texas Tech Red Raiders,TTU,5,F4,0.883,94812
+Akron Zips,AKR,12,F4,0.1047,11247
+Alabama Crimson Tide,ALA,4,F4,1.3645,146508
+Hofstra Pride,HOF,13,F4,0.0733,7872
+Tennessee Volunteers,TENN,6,F4,0.818,87827
+M-OH/SMU,M-OH/SMU,11,F4,0.1817,19505
+Virginia Cavaliers,UVA,3,F4,2.7711,297543
+Wright State Raiders,WRST,14,F4,0.0606,6510
+Kentucky Wildcats,UK,7,F4,0.8487,91127
+Santa Clara Broncos,SCU,10,F4,0.111,11915
+Iowa State Cyclones,ISU,2,F4,6.9604,747372
+Tennessee State Tigers,TNST,15,F4,0.114,12237
+Duke Blue Devils,DUKE,1,E8,60.6287,6509957
+Siena Saints,SIE,16,E8,0.5371,57671
+Ohio State Buckeyes,OSU,8,E8,0.8599,92333
+TCU Horned Frogs,TCU,9,E8,0.351,37683
+St. John's Red Storm,SJU,5,E8,5.8425,627335
+Northern Iowa Panthers,UNI,12,E8,0.1804,19365
+Kansas Jayhawks,KU,4,E8,4.2919,460837
+California Baptist Lancers,CBU,13,E8,0.1393,14959
+Louisville Cardinals,LOU,6,E8,1.0872,116736
+South Florida Bulls,USF,11,E8,0.3548,38092
+Michigan State Spartans,MSU,3,E8,9.7723,1049295
+North Dakota State Bison,NDSU,14,E8,0.1391,14940
+UCLA Bruins,UCLA,7,E8,1.1928,128075
+UCF Knights,UCF,10,E8,0.2383,25592
+UConn Huskies,CONN,2,E8,14.1905,1523698
+Furman Paladins,FUR,15,E8,0.1942,20855
+UCLA Bruins,UCLA,7,R1,66.2331,7111733
+UCF Knights,UCF,10,R1,33.7669,3625690
+Duke Blue Devils,DUKE,1,R2,92.7566,9959671
+Siena Saints,SIE,16,R2,1.0056,107971
+Ohio State Buckeyes,OSU,8,R2,3.9295,421932
+TCU Horned Frogs,TCU,9,R2,2.3083,247849
+Texas Tech Red Raiders,TTU,5,R1,77.3689,8307430
+Akron Zips,AKR,12,R1,22.6311,2429993
+Villanova Wildcats,VILL,8,R1,51.2238,5500116
+Utah State Aggies,USU,9,R1,48.7762,5237307
+Louisville Cardinals,LOU,6,S16,5.587,599898
+South Florida Bulls,USF,11,S16,1.6187,173802
+Michigan State Spartans,MSU,3,S16,36.1206,3878426
+North Dakota State Bison,NDSU,14,S16,0.3976,42687
+UCLA Bruins,UCLA,7,S16,6.3275,679415
+UCF Knights,UCF,10,S16,1.14,122407
+UConn Huskies,CONN,2,S16,47.9486,5148445
+Furman Paladins,FUR,15,S16,0.86,92343
+Miami Hurricanes,MIA,7,R2,13.2975,1427808
+Missouri Tigers,MIZ,10,R2,6.0976,654720
+Purdue Boilermakers,PUR,2,R2,79.0677,8489834
+Queens University Royals,QUC,15,R2,1.5372,165061
+Vanderbilt Commodores,VAN,5,R2,54.4497,5846497
+McNeese Cowboys,MCN,12,R2,5.2259,561126
+Nebraska Cornhuskers,NEB,4,R2,37.5183,4028495
+Troy Trojans,TROY,13,R2,2.8061,301305
+Tennessee Volunteers,TENN,6,S16,9.6046,1031284
+M-OH/SMU,M-OH/SMU,11,S16,1.2415,133301
+Virginia Cavaliers,UVA,3,S16,26.9436,2893048
+Wright State Raiders,WRST,14,S16,0.3882,41679
+Kentucky Wildcats,UK,7,S16,6.8216,732460
+Santa Clara Broncos,SCU,10,S16,1.3213,141875
+Iowa State Cyclones,ISU,2,S16,52.7953,5668853
+Tennessee State Tigers,TNST,15,S16,0.884,94923
+Saint Mary's Gaels,SMC,7,R1,53.5876,5753922
+Texas A&M Aggies,TA&M,10,R1,46.4124,4983501
+Florida Gators,FLA,1,R1,98.1156,10535082
+PV/LEH,PV/LEH,16,R1,1.8844,202341
+Michigan Wolverines,MICH,1,R1,97.9424,10516485
+Howard Bison,HOW,16,R1,2.0576,220938
+Duke Blue Devils,DUKE,1,F4,43.5594,4677160
+Siena Saints,SIE,16,F4,0.3575,38381
+Ohio State Buckeyes,OSU,8,F4,0.5056,54292
+TCU Horned Frogs,TCU,9,F4,0.1487,15968
+St. John's Red Storm,SJU,5,F4,2.4888,267235
+Northern Iowa Panthers,UNI,12,F4,0.0723,7768
+Kansas Jayhawks,KU,4,F4,2.0383,218861
+California Baptist Lancers,CBU,13,F4,0.0752,8070
+Louisville Cardinals,LOU,6,F4,0.4299,46165
+South Florida Bulls,USF,11,F4,0.1418,15228
+Michigan State Spartans,MSU,3,F4,4.4009,472538
+North Dakota State Bison,NDSU,14,F4,0.0665,7143
+UCLA Bruins,UCLA,7,F4,0.4834,51910
+UCF Knights,UCF,10,F4,0.0917,9850
+UConn Huskies,CONN,2,F4,7.4629,801323
+Furman Paladins,FUR,15,F4,0.0778,8355
+Florida Gators,FLA,1,F4,15.3806,1651484
+PV/LEH,PV/LEH,16,F4,0.1617,17363
+Clemson Tigers,CLEM,8,F4,0.2326,24980
+Iowa Hawkeyes,IOWA,9,F4,0.2269,24364
+Vanderbilt Commodores,VAN,5,F4,1.1393,122333
+McNeese Cowboys,MCN,12,F4,0.1438,15438
+Nebraska Cornhuskers,NEB,4,F4,0.891,95669
+Troy Trojans,TROY,13,F4,0.0679,7291
+North Carolina Tar Heels,UNC,6,F4,0.9828,105532
+VCU Rams,VCU,11,F4,0.0891,9569
+Illinois Fighting Illini,ILL,3,F4,3.4075,365880
+Pennsylvania Quakers,PENN,14,F4,0.1112,11936
+Saint Mary's Gaels,SMC,7,F4,0.1861,19978
+Texas A&M Aggies,TA&M,10,F4,0.2166,23258
+Houston Cougars,HOU,2,F4,14.2543,1530547
+Idaho Vandals,IDHO,15,F4,0.1076,11554
+Michigan Wolverines,MICH,1,S16,79.8208,8570701
+Howard Bison,HOW,16,S16,0.6694,71878
+Georgia Bulldogs,UGA,8,S16,1.6765,180016
+Saint Louis Billikens,SLU,9,S16,1.4621,156992
+Texas Tech Red Raiders,TTU,5,S16,6.505,698474
+Akron Zips,AKR,12,S16,0.6804,73053
+Alabama Crimson Tide,ALA,4,S16,8.711,935334
+Hofstra Pride,HOF,13,S16,0.4747,50975
+Houston Cougars,HOU,2,R1,96.7408,10387473
+Idaho Vandals,IDHO,15,R1,3.2592,349950
+Michigan State Spartans,MSU,3,R1,94.7201,10170502
+North Dakota State Bison,NDSU,14,R1,5.2799,566921
+Kentucky Wildcats,UK,7,R1,68.9016,7398251
+Santa Clara Broncos,SCU,10,R1,31.0984,3339172
+Georgia Bulldogs,UGA,8,R1,55.99,6011887
+Saint Louis Billikens,SLU,9,R1,44.01,4725536
+Duke Blue Devils,DUKE,1,S16,76.7832,8244540
+Siena Saints,SIE,16,S16,0.6846,73506
+Ohio State Buckeyes,OSU,8,S16,1.7873,191912
+TCU Horned Frogs,TCU,9,S16,0.8412,90325
+St. John's Red Storm,SJU,5,S16,10.6166,1139946
+Northern Iowa Panthers,UNI,12,S16,0.4341,46608
+Kansas Jayhawks,KU,4,S16,8.5005,912737
+California Baptist Lancers,CBU,13,S16,0.3525,37849
+BYU Cougars,BYU,6,R2,29.8056,3200357
+Texas Longhorns,TEX,11,R2,4.6122,495230
+Gonzaga Bulldogs,GONZ,3,R2,63.8636,6857305
+Kennesaw State Owls,KENN,14,R2,1.7186,184531
+Florida Gators,FLA,1,R2,90.1045,9674906
+PV/LEH,PV/LEH,16,R2,0.911,97819
+Clemson Tigers,CLEM,8,R2,4.1588,446550
+Iowa Hawkeyes,IOWA,9,R2,4.8256,518148
+Ohio State Buckeyes,OSU,8,R1,58.6765,6300346
+TCU Horned Frogs,TCU,9,R1,41.3235,4437077
+BYU Cougars,BYU,6,S16,12.0261,1291288
+Texas Longhorns,TEX,11,S16,1.0191,109429
+Gonzaga Bulldogs,GONZ,3,S16,30.045,3226054
+Kennesaw State Owls,KENN,14,S16,0.3944,42346
+Miami Hurricanes,MIA,7,S16,5.2278,561333
+Missouri Tigers,MIZ,10,S16,1.7595,188922
+Purdue Boilermakers,PUR,2,S16,48.6384,5222513
+Queens University Royals,QUC,15,S16,0.8898,95538
