@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+.venv/
+
+# Large data
+data/data/
+data/rdata/
+data/brackets_2015.zip
+*.RData
+
+# Historical data (backtest only — not needed for 2026 pipeline)
+data/538_*.csv
+data/espn_picks_2023_mens.csv
+data/espn_picks_2024_mens.csv
+data/espn_picks_2025_mens.csv
+data/espn_picks_2026_mens_alt.csv
+data/tidytuesday_*.csv
+data/historical/pred.538.men.*.csv
+data/historical/pred.kenpom.men.*.csv
+data/historical/pred.pop.men.*.csv
+
+# Deprecated / backtest code
+backtest_*.py
+bracket_generator.py
+bracket_optimizer.py
+build_leverage_table.py
+scrape_yahoo_picks.py
+
+# Generated output
+final_brackets*.json
+brackets_export.json
+leverage_table.csv
+yahoo_pick_distribution.csv
+
+# Internal docs (planning, research, ops)
+docs/PLAN.md
+docs/STATUS.md
+docs/BLOG.md
+docs/claude_ops.md
+docs/plans/
+docs/research/
+docs/analysis/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Claude
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

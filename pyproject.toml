@@ -1,0 +1,11 @@
+[project]
+name = "march-madness-optimizer"
+version = "0.1.0"
+description = "Kelly-optimal bracket generation for NCAA March Madness pools"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.30", "plotly>=5.0", "pandas>=2.0"]
+data = ["pyreadr"]
+
