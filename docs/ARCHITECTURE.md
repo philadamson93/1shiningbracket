@@ -230,17 +230,15 @@ def make_portfolio(M_sims, model, public, truth, params):
 3. `PLAN.md` — research findings, design decisions, backtest results
 
 **To generate final brackets:**
-1. `python3 scrape_espn_picks.py` — refresh public pick data
-2. Build `sim_engine.py` (extract from backtest_sim.py)
-3. Build `bracket_maker.py` (hill-climbing + portfolio)
-4. Calibrate sigma from 538 historical errors
-5. Run `bracket_maker.py` → `final_brackets.json`
-6. Enter brackets into pool platforms before 12:15 PM ET March 19
+1. `python3 src/scrape_espn_picks.py` — refresh public pick data
+2. `python3 src/bracket_maker.py --sims 10000` → `output/final_brackets.json`
+3. Enter brackets into pool platforms
 
 **Key files for code:**
-- `data_loader.py` — all data loading, name normalization
-- `backtest_sim.py` — simulation backtest (needs model separation fix)
-- `bracket_optimizer.py` — old approach (deprecated, reference only)
+- `src/data_loader.py` — all data loading, name normalization
+- `src/sim_engine.py` — tournament simulation, scoring, hill-climbing
+- `src/bracket_maker.py` — portfolio optimizer, CLI entry point
+- `backtest/backtest_kelly.py` — historical validation
 - `data/historical/` — 538, KenPom, ESPN pick CSVs for 2016-2025
 - `data/espn_picks_2026_mens.csv` — current year ESPN data
 

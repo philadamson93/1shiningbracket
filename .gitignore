@@ -24,18 +24,9 @@ data/historical/pred.538.men.*.csv
 data/historical/pred.kenpom.men.*.csv
 data/historical/pred.pop.men.*.csv
 
-# Deprecated / backtest code
-backtest_*.py
-bracket_generator.py
-bracket_optimizer.py
-build_leverage_table.py
-scrape_yahoo_picks.py
-
 # Generated output
-final_brackets*.json
-brackets_export.json
+output/final_brackets*.json
 leverage_table.csv
-yahoo_pick_distribution.csv
 
 # Internal docs (planning, research, ops)
 docs/PLAN.md

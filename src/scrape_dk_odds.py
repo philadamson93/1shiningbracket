@@ -1026,7 +1026,7 @@ def main():
     print_region_summary(rows)
 
     # Step 8: Write CSV
-    csv_path = "dk_implied_odds.csv"
+    csv_path = "data/dk_implied_odds.csv"
     write_csv(rows, csv_path)
 
     # Step 9: Leverage analysis vs Yahoo

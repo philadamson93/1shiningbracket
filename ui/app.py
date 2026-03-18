@@ -23,7 +23,7 @@ import pandas as pd
 # ---------------------------------------------------------------------------
 
 ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(ROOT))
+sys.path.insert(0, str(ROOT / "src"))
 os.chdir(ROOT)
 
 from sim_engine import (
@@ -444,7 +444,7 @@ with st.sidebar:
     st.divider()
     generate = st.button("Generate", type="primary", use_container_width=True)
 
-    if os.path.exists("final_brackets.json"):
+    if os.path.exists("output/final_brackets.json"):
         load_saved = st.button("Load Saved Brackets", use_container_width=True)
     else:
         load_saved = False
@@ -507,7 +507,7 @@ if generate:
 
 # Load saved brackets from JSON
 if load_saved:
-    with open("final_brackets.json") as f:
+    with open("output/final_brackets.json") as f:
         saved = json.load(f)
     brackets_list = []
     for entry in saved:

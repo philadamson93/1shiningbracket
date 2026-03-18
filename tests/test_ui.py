@@ -12,8 +12,9 @@ import os
 import json
 import pytest
 
-# Ensure project root on path
+# Ensure project root and src on path
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "src"))
 sys.path.insert(0, ROOT)
 os.chdir(ROOT)
 
@@ -170,13 +171,13 @@ class TestBracketSwitching:
     def test_switch_to_last_bracket(self, app_with_saved):
         select = app_with_saved.selectbox[0]
         # Get total options from saved brackets
-        with open("final_brackets.json") as f:
+        with open("output/final_brackets.json") as f:
             n = len(json.load(f))
         select.set_value(n - 1).run()
         assert len(app_with_saved.exception) == 0
 
     def test_different_brackets_may_have_different_champions(self, app_with_saved):
-        with open("final_brackets.json") as f:
+        with open("output/final_brackets.json") as f:
             saved = json.load(f)
         champions = {e["champion"] for e in saved}
         # Our portfolio should have some diversity
@@ -328,7 +329,7 @@ class TestDataIntegrity:
         from sim_engine import BRACKET, build_game_tree, bracket_to_display
         all_teams = {t for region in BRACKET.values() for t, _ in region}
         gt = build_game_tree()
-        with open("final_brackets.json") as f:
+        with open("output/final_brackets.json") as f:
             saved = json.load(f)
         for i, entry in enumerate(saved):
             assert "champion" in entry, f"Bracket {i}: missing champion"

@@ -20,15 +20,15 @@ The optimizer simulates thousands of tournament outcomes, generates opponent bra
 
 ```bash
 # Refresh ESPN public pick data
-python3 scrape_espn_picks.py
+python3 src/scrape_espn_picks.py
 
 # Generate brackets (quick ~5s, for iteration)
-python3 bracket_maker.py --sims 200
+python3 src/bracket_maker.py --sims 200
 
 # Generate brackets (production ~5 min)
-python3 bracket_maker.py --sims 10000
+python3 src/bracket_maker.py --sims 10000
 
-# Output: final_brackets.json (10 brackets, one per pool)
+# Output: output/final_brackets.json (10 brackets, one per pool)
 ```
 
 ### Streamlit UI
@@ -49,7 +49,7 @@ The UI lets you:
 
 ### Inputs
 
-**Pool configuration** (edit `POOLS` list in `bracket_maker.py` or use the UI sidebar):
+**Pool configuration** (edit `POOLS` list in `src/bracket_maker.py` or use the UI sidebar):
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
@@ -80,14 +80,14 @@ Different pool sizes naturally produce different brackets — small pools favor 
 
 | File | Purpose |
 |------|---------|
-| `bracket_maker.py` | Main entry point — pool config, portfolio optimizer |
-| `sim_engine.py` | Core engine — simulation, scoring, hill-climbing, Kelly EV |
-| `data_loader.py` | Load and normalize all data sources |
-| `calibrate_sigma.py` | Compute model error parameter from 538 historical data |
+| `src/bracket_maker.py` | Main entry point — pool config, portfolio optimizer |
+| `src/sim_engine.py` | Core engine — simulation, scoring, hill-climbing, Kelly EV |
+| `src/data_loader.py` | Load and normalize all data sources |
+| `src/calibrate_sigma.py` | Compute model error parameter from 538 historical data |
 | `ui/app.py` | Streamlit interactive UI |
-| `backtest_kelly.py` | Historical validation against actual outcomes (2018-2023) |
-| `backtest_mc.py` | Monte Carlo backtest with confidence intervals |
-| `final_brackets.json` | Generated brackets output |
+| `backtest/backtest_kelly.py` | Historical validation against actual outcomes (2018-2023) |
+| `backtest/backtest_mc.py` | Monte Carlo backtest with confidence intervals |
+| `output/final_brackets.json` | Generated brackets output |
 
 ## Historical Validation
 

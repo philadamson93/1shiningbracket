@@ -9,7 +9,7 @@
 | File | Source | Year | Format | Notes |
 |------|--------|------|--------|-------|
 | `data/historical/pred.paine.men.2026.csv` | Neil Paine composite | 2026 | name, round1-6 | Same methodology as 538 |
-| `dk_implied_odds.csv` | DraftKings | 2026 | team, R1/S16/E8/F4/champ implied | No R2 column; interpolate R2≈sqrt(R1×S16) |
+| `data/dk_implied_odds.csv` | DraftKings | 2026 | team, R1/S16/E8/F4/champ implied | No R2 column; interpolate R2≈sqrt(R1×S16) |
 | `data/historical/pred.538.men.{2017-2023}.csv` | FiveThirtyEight | 2017-2023 | name, round1-6 | Pre-tournament cumulative advancement probs |
 | `data/historical/pred.kenpom.men.{2018-2022}.csv` | KenPom | 2018-2022 | name, round1-6 | Alternative model |
 
@@ -20,7 +20,6 @@
 | `data/espn_picks_2026_mens.csv` | ESPN Gambit API | 2026 | team, round, pick_pct, pick_count | ~172M brackets (refreshed 9:40 PM ET Mar 18) |
 | `data/espn_picks_{2023-2025}_mens.csv` | ESPN Gambit API | 2023-2025 | same | Historical ESPN API |
 | `data/historical/pred.pop.men.{2016-2025}.csv` | mRchmadness R package | 2016-2025 | name, round1-6 | ESPN cache, converted from RData |
-| `yahoo_pick_distribution.csv` | Yahoo Bracket Mayhem | 2026 | team, round_label, pick_pct | Deprecated, superseded by ESPN |
 
 ### Actual Outcomes (for backtesting and sigma calibration)
 
@@ -44,14 +43,13 @@
 | `data/538_historical_game_results.csv` | FiveThirtyEight | Duplicate of ncaa_tournament_model_results |
 | `data/tidytuesday_public_picks.csv` | TidyTuesday | Small public pick dataset |
 | `data/espn_picks_2026_mens_alt.csv` | ESPN API | Alternative scrape of 2026 data |
-| `leverage_table.csv` | build_leverage_table.py | Yahoo+DK join (deprecated) |
 
 ## Data Flow
 
 ```
 Model:  pred.paine.men.2026.csv ─┐
                                   ├─ blend_probs() ─→ our_probs ─→ make_chalk_bracket()
-Market: dk_implied_odds.csv ─────┘                                  ↓
+Market: data/dk_implied_odds.csv ┘                                  ↓
                                                               hill-climb
                                                                   ↓
 Truth:  our_probs + perturb_probs(sigma=0.27) ──→ simulate_tournament()
@@ -86,7 +84,7 @@ round6 = P(win championship)     → our "Championship"
 
 | Parameter | Value | Source |
 |-----------|-------|--------|
-| SIGMA_LOGIT | 0.27 | calibrate_sigma.py: RMS calibration error from 1482 team×round observations (2018-2023) |
+| SIGMA_LOGIT | 0.27 | src/calibrate_sigma.py: RMS calibration error from 1482 team×round observations (2018-2023) |
 | MODEL_WEIGHT | 0.35 | User preference: lean DK (market); models agree within ~1% |
 
 ## ESPN Gambit API
@@ -102,7 +100,7 @@ Filter by round: &filter={"filterPropositionScoringPeriodIds":{"value":[ROUND]}}
 ## Refresh Commands
 
 ```bash
-python3 scrape_espn_picks.py        # Refresh ESPN public picks (run close to deadline)
-python3 scrape_dk_odds.py           # Refresh DK odds (manual — update hardcoded odds)
-python3 calibrate_sigma.py          # Recompute sigma (only if adding new historical data)
+python3 src/scrape_espn_picks.py        # Refresh ESPN public picks (run close to deadline)
+python3 src/scrape_dk_odds.py           # Refresh DK odds (manual — update hardcoded odds)
+python3 src/calibrate_sigma.py          # Recompute sigma (only if adding new historical data)
 ```

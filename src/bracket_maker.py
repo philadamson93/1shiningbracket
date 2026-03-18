@@ -156,7 +156,7 @@ def print_summary(results, model_probs, public_probs, game_tree):
     print(f"\nPortfolio covers {len(champ_counts)} unique champions")
 
 
-def export_brackets(results, filepath="final_brackets.json"):
+def export_brackets(results, filepath="output/final_brackets.json"):
     export = []
     for i, (bracket, pool, kelly_ev_val) in enumerate(results):
         d = bracket_to_display(bracket)
@@ -187,7 +187,7 @@ def parse_args():
     parser.add_argument("--model-weight", type=float, default=MODEL_WEIGHT)
     parser.add_argument("--wealth-base", type=float, default=WEALTH_BASE)
     parser.add_argument("--seed", type=int, default=RANDOM_SEED)
-    parser.add_argument("--output", type=str, default="final_brackets.json")
+    parser.add_argument("--output", type=str, default="output/final_brackets.json")
     return parser.parse_args()
 
 

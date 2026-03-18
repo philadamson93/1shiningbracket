@@ -279,7 +279,7 @@ def load_yahoo_picks(filepath: str = "yahoo_pick_distribution.csv") -> dict:
     return data
 
 
-def load_dk_odds(filepath: str = "dk_implied_odds.csv") -> dict:
+def load_dk_odds(filepath: str = "data/dk_implied_odds.csv") -> dict:
     """
     Load DraftKings implied odds.
     Returns: dict[canonical_team_name] = {"R1": prob, ..., "Championship": prob}
