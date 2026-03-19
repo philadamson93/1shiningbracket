@@ -290,6 +290,32 @@ def main():
 
     print(f"  Matched {matched}/{len(rows)} teams to bracket")
 
+    # Normalize per-region: S16 should sum to 4, E8 and F4 should sum to 1
+    regions = set(r["region"] for r in rows if r["region"])
+    for region in regions:
+        region_rows = [r for r in rows if r["region"] == region]
+
+        for col, target in [("S16_implied", 4.0), ("E8_implied", 1.0), ("F4_implied", 1.0)]:
+            total = sum(r[col] for r in region_rows)
+            if total > 0:
+                scale = target / total
+                for r in region_rows:
+                    r[col] = min(0.999, r[col] * scale)
+
+    # Ensure monotonic: R1 >= S16 >= E8 >= F4 >= Championship
+    for r in rows:
+        r["S16_implied"] = min(r["S16_implied"], r["R1_implied"])
+        r["E8_implied"] = min(r["E8_implied"], r["S16_implied"])
+        r["F4_implied"] = min(r["F4_implied"], r["E8_implied"])
+        r["championship_implied"] = min(r["championship_implied"], r["F4_implied"])
+
+    # Verify
+    for region in regions:
+        region_rows = [r for r in rows if r["region"] == region]
+        e8_sum = sum(r["E8_implied"] for r in region_rows)
+        f4_sum = sum(r["F4_implied"] for r in region_rows)
+        print(f"  {region}: E8 sum={e8_sum:.3f}, F4 sum={f4_sum:.3f}")
+
     # Write CSV
     write_csv(rows, args.output)
 
