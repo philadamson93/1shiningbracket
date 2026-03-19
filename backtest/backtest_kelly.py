@@ -41,7 +41,7 @@ RAW_538_FILES = {
 }
 
 KNOWN_CHAMPIONS = {
-    2018: "Villanova", 2021: "Baylor", 2022: "Kansas", 2023: "Connecticut",
+    2018: "Villanova", 2021: "Baylor", 2022: "Kansas", 2023: "UConn",
 }
 
 # Standard NCAA seed order within a region for bracket pairing
@@ -104,7 +104,7 @@ def build_year_bracket(pre_rows):
             seed = int(seed_str)
         except ValueError:
             seed = int(seed_str.rstrip("abcd"))  # play-in: "11a", "11b", etc.
-        name = row["team_name"]
+        name = normalize_team_name(row["team_name"])
         by_region[region].append((seed, name))
 
     # For play-in seeds (multiple teams with same seed), keep one with higher rating
@@ -182,7 +182,7 @@ def extract_actual_outcome(post_rows, bracket, region_names, year):
     # Build lookup: team_name → max round reached (0-6)
     max_round = {}
     for row in post_rows:
-        name = row["team_name"]
+        name = normalize_team_name(row["team_name"])
         reached = 0
         for i, col in enumerate(ROUND_COL):
             val = float(row.get(col, 0))

@@ -175,40 +175,15 @@ def perturb_probs(probs, sigma):
     return perturbed
 
 
-def _normalize_source(probs):
-    """
-    Normalize a probability source so per-region sums match cumulative
-    advancement semantics: R1=8, R2=4, S16=2, E8=1, F4=0.5, Champ=0.25.
-    """
-    # Build region lookup from BRACKET
-    team_region = {}
-    for region, teams in BRACKET.items():
-        for team, _ in teams:
-            team_region[team] = region
-
-    targets = {"R1": 8.0, "R2": 4.0, "S16": 2.0, "E8": 1.0,
-               "F4": 0.5, "Championship": 0.25}
-
-    for rd, target in targets.items():
-        for region in REGIONS:
-            region_teams = [t for t in probs if team_region.get(t) == region]
-            total = sum(probs.get(t, {}).get(rd, 0) for t in region_teams)
-            if total > 0:
-                scale = target / total
-                for t in region_teams:
-                    if rd in probs.get(t, {}):
-                        probs[t][rd] = min(0.999, probs[t][rd] * scale)
-
-    return probs
-
-
 def blend_probs(model, market, model_weight=0.35):
     """
     Blend model and market probabilities.
-    Normalizes each source to consistent per-region sums before blending.
     Interpolates missing R2 from market data geometrically: R2 ≈ sqrt(R1 × S16).
+
+    No per-region normalization: get_game_prob uses pa/(pa+pb) ratios,
+    so within-region scaling cancels out. Cross-regional rounds (F4/Championship)
+    should not be forced to equal per-region targets.
     """
-    # Deep copy to avoid mutating originals
     import copy
     model = copy.deepcopy(model)
     market = copy.deepcopy(market)
@@ -217,10 +192,6 @@ def blend_probs(model, market, model_weight=0.35):
     for team, k in market.items():
         if "R2" not in k and "R1" in k and "S16" in k:
             k["R2"] = math.sqrt(k["R1"] * k["S16"])
-
-    # Normalize each source independently
-    _normalize_source(model)
-    _normalize_source(market)
 
     # Blend
     all_teams = set(list(model.keys()) + list(market.keys()))
@@ -239,10 +210,6 @@ def blend_probs(model, market, model_weight=0.35):
                 blended[team][rd] = mp
             elif kp > 0:
                 blended[team][rd] = kp
-
-    # Final normalization pass on the blend to clean up drift from
-    # teams that only exist in one source
-    _normalize_source(blended)
 
     return blended
 

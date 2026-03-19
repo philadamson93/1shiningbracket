@@ -30,7 +30,7 @@ KNOWN_CHAMPIONS = {
     2018: "Villanova",
     2021: "Baylor",
     2022: "Kansas",
-    2023: "Connecticut",
+    2023: "UConn",
 }
 
 # 538 raw columns → our round names
