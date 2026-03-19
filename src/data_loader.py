@@ -163,7 +163,7 @@ TEAM_ALIASES = {
     "Oral Roberts": ["Oral Roberts", "ORU"],
     "Saint Peter's": ["Saint Peter's", "St. Peter's"],
     "Colgate": ["Colgate", "Colgate Raiders"],
-    "North Carolina-Wilmington": ["North Carolina-Wilmington", "UNCW", "UNC Wilmington"],
+    "North Carolina-Wilmington": ["North Carolina-Wilmington", "North Carolina Wilmington", "UNCW", "UNC Wilmington"],
     "North Carolina Central": ["North Carolina Central", "NC Central"],
     "North Carolina A&T": ["North Carolina A&T", "NC A&T"],
     "UC Davis": ["UC Davis", "UC-Davis"],

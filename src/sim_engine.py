@@ -284,6 +284,9 @@ def generate_opponent(public_probs, game_tree):
 
 def score_bracket(bracket, outcome):
     """Score a bracket against a tournament outcome. Returns integer points."""
+    global _cached_game_tree
+    if _cached_game_tree is None:
+        _cached_game_tree = build_game_tree()
     _, _, _, game_points = _cached_game_tree
     return sum(game_points[g] for g in range(63) if bracket[g] == outcome[g])
 
