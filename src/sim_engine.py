@@ -197,7 +197,7 @@ def _normalize_source(probs):
                 scale = target / total
                 for t in region_teams:
                     if rd in probs.get(t, {}):
-                        probs[t][rd] *= scale
+                        probs[t][rd] = min(0.999, probs[t][rd] * scale)
 
     return probs
 
