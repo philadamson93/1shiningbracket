@@ -63,7 +63,7 @@ TEAM_ALIASES = {
     "UConn": ["UConn", "Connecticut", "Connecticut Huskies", "UCONN"],
     "Illinois": ["Illinois", "Illinois Fighting Illini", "ILL"],
     "Purdue": ["Purdue", "Purdue Boilermakers"],
-    "Michigan State": ["Michigan State", "Michigan St.", "Michigan State Spartans", "MSU"],
+    "Michigan State": ["Michigan State", "Michigan St.", "Michigan St", "Michigan State Spartans", "Michigan St Spartans", "MSU"],
     "Gonzaga": ["Gonzaga", "Gonzaga Bulldogs"],
     "Virginia": ["Virginia", "Virginia Cavaliers", "UVA"],
     "Louisville": ["Louisville", "Louisville Cardinals"],
@@ -99,7 +99,7 @@ TEAM_ALIASES = {
     "Villanova": ["Villanova", "Villanova Wildcats", "NOVA"],
     "Utah State": ["Utah State", "Utah St.", "Utah State Aggies"],
     "High Point": ["High Point", "High Point Panthers"],
-    "Kennesaw State": ["Kennesaw State", "Kennesaw St.", "Kennesaw State Owls"],
+    "Kennesaw State": ["Kennesaw State", "Kennesaw St.", "Kennesaw State Owls", "Kennesaw St Owls"],
     "Queens": ["Queens", "Queens University", "Queens Royals"],
     "Northern Iowa": ["Northern Iowa", "Northern Iowa Panthers", "UNI"],
     "Cal Baptist": ["Cal Baptist", "California Baptist", "California Baptist Lancers", "CBU"],
@@ -113,8 +113,8 @@ TEAM_ALIASES = {
     "Penn": ["Penn", "Pennsylvania", "Pennsylvania Quakers"],
     "Idaho": ["Idaho", "Idaho Vandals"],
     "McNeese": ["McNeese", "McNeese Cowboys", "McNeese State"],
-    "Wright State": ["Wright State", "Wright St.", "Wright State Raiders"],
-    "Tennessee State": ["Tennessee State", "Tennessee St.", "Tennessee State Tigers"],
+    "Wright State": ["Wright State", "Wright St.", "Wright State Raiders", "Wright St Raiders"],
+    "Tennessee State": ["Tennessee State", "Tennessee St.", "Tennessee State Tigers", "Tennessee St Tigers"],
     "Hawaii": ["Hawaii", "Hawai'i", "Hawaii Rainbow Warriors"],
     "Georgia": ["Georgia", "Georgia Bulldogs", "UGA"],
     "Saint Louis": ["Saint Louis", "St. Louis", "Saint Louis Billikens", "SLU"],
@@ -192,15 +192,20 @@ def normalize_team_name(name: str) -> str:
     if canonical:
         return canonical
 
-    # Try exact-word prefix match, but NOT substring matches that would
-    # confuse "North Carolina" with "North Carolina-Wilmington"
-    # Only match if the alias IS the full name or the name starts with alias + space/end
+    # Try exact-word prefix match. Prefer the longest matching alias
+    # to avoid "Tennessee St Tigers" matching "Tennessee" instead of
+    # "Tennessee St."
+    name_lower = name.lower()
+    best_match = None
+    best_len = 0
     for alias, canon in _ALIAS_TO_CANONICAL.items():
-        if name.lower() == alias:
-            return canon
-        # Match "Houston Cougars" → "Houston" but NOT "North Carolina-Wilmington" → "North Carolina"
-        if name.lower().startswith(alias + " "):
-            return canon
+        if name_lower == alias or name_lower.startswith(alias + " "):
+            if len(alias) > best_len:
+                best_match = canon
+                best_len = len(alias)
+
+    if best_match:
+        return best_match
 
     # Return original if no match
     return name
