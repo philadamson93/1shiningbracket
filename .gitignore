@@ -26,6 +26,7 @@ data/tidytuesday_*.csv
 data/historical/pred.538.men.*.csv
 data/historical/pred.kenpom.men.*.csv
 data/historical/pred.pop.men.*.csv
+data/historical/pred.paine.men.*.csv
 
 # Generated output
 output/final_brackets*.json

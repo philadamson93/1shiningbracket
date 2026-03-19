@@ -443,8 +443,14 @@ def load_year_data(year: int) -> dict:
 
     # Market probabilities (DK for 2026, historical for others)
     if year == 2026:
-        result["market"] = load_dk_odds()
-        result["sources"]["market"] = "DraftKings 2026"
+        dk = load_dk_odds()
+        if dk:
+            result["market"] = dk
+            result["sources"]["market"] = "DraftKings 2026"
+            # Fall back to DK as model if no analytical model available
+            if not result["model"]:
+                result["model"] = dk
+                result["sources"]["model"] = "DraftKings 2026 (no analytical model found)"
     # TODO: load historical sportsbook odds when available
 
     # Public picks (prefer ESPN API, fall back to mRchmadness, then Yahoo)

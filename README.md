@@ -24,9 +24,21 @@ cd 1shiningbracket
 uv sync
 ```
 
-## Usage
+## Setup
 
-### Command Line
+### Model data (required)
+
+Download Neil Paine's 2026 NCAA Tournament Forecast from his Substack (free post):
+https://neilpaine.substack.com/p/2026-ncaa-tournament-forecast
+
+Save the team probability table as `data/historical/pred.paine.men.2026.csv` in wide format:
+```
+name,round1,round2,round3,round4,round5,round6
+Duke,1.0,0.9936,0.8736,0.7152,0.5556,0.2376
+...
+```
+
+### Usage
 
 ```bash
 # Refresh ESPN public pick data
@@ -35,10 +47,10 @@ uv run python3 src/scrape_espn_picks.py
 # Generate brackets (quick ~5s, for iteration)
 uv run python3 src/bracket_maker.py --sims 200
 
-# Generate brackets (production ~5 min)
-uv run python3 src/bracket_maker.py --sims 10000
+# Generate brackets (production ~15 min)
+uv run python3 src/bracket_maker.py
 
-# Output: output/final_brackets.json (10 brackets, one per pool)
+# Output: output/final_brackets.json (one bracket per pool)
 ```
 
 ### Streamlit UI
