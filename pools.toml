@@ -3,7 +3,8 @@
 # Default: 1 bracket for a 250-person pool with spread payout.
 #
 # To add more brackets, copy a [[pool]] block and adjust.
-# Payout is a list of percentages by finishing position (1st, 2nd, ...).
+# Payout is a list of percentages by finishing position (1st, 2nd, ...),
+# or dollar amounts (auto-detected if they sum to > 100).
 
 [[pool]]
 name = "My Pool"
