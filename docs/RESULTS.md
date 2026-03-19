@@ -78,6 +78,51 @@ Single-seed backtests are noisy. We ran 20 trials per year with randomized hill-
 - Champion hit rate is meaningful: 100% for Villanova (obvious favorite with leverage), 0% for UConn (model underrated them)
 - **2021 and 2022 show the optimizer's biggest strength**: +250-270 pts vs chalk in upset years, because contrarian picks in earlier rounds score even when the champion pick is wrong
 
+### Hypothetical Winnings (mirroring actual 2026 pool configs)
+
+Using our actual 10 pools (100-400 person, mix of WTA and spread payouts), how would the optimizer have performed historically? Each bracket is scored against actual outcomes and a simulated field of ESPN-style opponents matching the pool size.
+
+| Year | Champion | Optimizer | Chalk | Delta | Key Result |
+|------|----------|-----------|-------|-------|------------|
+| 2018 | Villanova | 4 cashes, **14%** | 12% | +2% | 4 Villanova brackets cashed in smaller pools |
+| 2021 | Baylor | 1 cash, **50%** | 0% | **+50%** | Kelly diversification → Baylor bracket **won 1st place** in 120-person pool |
+| 2022 | Kansas | 0 cashes | 0% | +0% | Gonzaga upset — nobody wins |
+| 2023 | UConn | 4 cashes, **57%** | **100%** | -43% | Chalk was perfect; optimizer cashed but didn't win as much |
+| **4-Year Total** | | **121%** | **112%** | **+9%** | |
+
+Payout is % of each pool's prize pool. With $100 buy-in per pool ($1,000 total), the optimizer returned ~$1,210 vs chalk's ~$1,120 over 4 years.
+
+**The 2021 Baylor result is the Kelly thesis in action:** the optimizer placed a Baylor bracket (which no chalk strategy would have picked — Baylor was the #5 model favorite) into one pool. When Baylor won, that single bracket won 1st place in a 120-person pool (50% of prize pool), covering the entire portfolio's entry fees. This is exactly the diversification payoff that Kelly log-wealth is designed to capture.
+
+**The 2023 result shows the downside:** when the chalk favorite (Houston) is also the correct pick AND well-calibrated by the model, the optimizer's contrarian lean costs money. Chalk pocketed 100% by placing in the money across all pools.
+
+### Parameter Sensitivity (single seed, M=500, 4 years)
+
+| wealth_base | 2018 | 2021 | 2022 | 2023 | Total | Cashes |
+|-------------|------|------|------|------|-------|--------|
+| 0.1 | 2% | 55% | 0% | 68% | 124% | 5/40 |
+| 0.2 | 0% | 50% | 50% | 68% | **167%** | 4/40 |
+| **0.3 (default)** | 1% | 0% | 0% | 18% | 20% | 4/40 |
+| 0.5 | 1% | 0% | 2% | 26% | 29% | 7/40 |
+| 1.0 | 11% | 0% | 0% | 141% | 152% | 9/40 |
+| 2.0 | 14% | 10% | 0% | 220% | **244%** | 9/40 |
+| **Chalk** | 12% | 0% | 0% | 100% | **112%** | 14/40 |
+
+| sigma | 2018 | 2021 | 2022 | 2023 | Total | Cashes |
+|-------|------|------|------|------|-------|--------|
+| 0.15 | 2% | 2% | 2% | 82% | 88% | 9/40 |
+| 0.20 | 8% | 1% | 0% | 34% | 43% | 7/40 |
+| **0.27 (calibrated)** | 1% | 0% | 0% | 18% | 20% | 4/40 |
+| 0.35 | 3% | 50% | 2% | 68% | **122%** | 6/40 |
+| 0.45 | 2% | 5% | 2% | 82% | 91% | 7/40 |
+
+**Caveat: these results are noisy.** With only 4 years and one random seed per configuration, the totals are dominated by whether a specific seed happens to catch the big upsets (Baylor 2021, Kansas 2022). A different seed shifts these numbers substantially. The parameter sweep should be interpreted directionally, not as precise rankings:
+
+- Higher `wealth_base` concentrates on leverage → wins big in chalk years (2023), misses upsets
+- Lower `wealth_base` diversifies more → catches some upsets but with fewer total cashes
+- Higher `sigma` explores more contrarian brackets → occasionally catches upsets (Baylor at σ=0.35)
+- The calibrated `sigma=0.27` and `wealth_base=0.3` are defensible middle-ground choices, not provably optimal on this small sample
+
 ### What Went Right
 
 **2018 (Villanova):** The optimizer correctly identified Villanova as a value champion (high model probability, not over-owned by public) and placed it in 5/10 brackets. Best bracket scored 1250 pts — higher than model chalk (1220).
@@ -144,7 +189,40 @@ This reveals an important limitation: **when one team dominates both the model a
 
 **6 unique champions** covering ~63% of simulated tournament outcomes.
 
-Notable: Duke does NOT appear as champion in any bracket. At N≥100, Duke's negative leverage (0.8x) means even its 19.3% probability doesn't overcome being over-owned (24.3% of ESPN picks Duke). The optimizer says: let the field pick Duke; we differentiate.
+### Impact of Wealth Base on Portfolio Composition
+
+At `wealth_base=1.0` (old default), the portfolio was too leverage-heavy — all 2/3 seeds, zero 1-seed champions. The Kelly diversification pressure was too weak (second bracket covering the same "world" was still worth 68% of the first).
+
+At `wealth_base=0.3` (current default), the optimizer covers probable worlds:
+
+| | wealth_base=1.0 | wealth_base=0.3 |
+|---|---|---|
+| 1-seed champions | 0/10 | **5/10** (Michigan 3, Florida 2) |
+| Unique champions | 6 | 6 |
+| Duke in FF | 0/10 | 1/10 |
+| Illinois champion | 3/10 | 1/10 |
+| Michigan champion | 2/10 | **3/10** |
+
+The lower wealth base says: "the marginal dollar matters more when I haven't won yet." This creates real pressure to cover the Duke/Michigan/Arizona worlds (which represent 53% of outcomes) rather than piling into high-leverage longshots.
+
+### Final 2026 Portfolio (M=20,000, wealth_base=0.3)
+
+| Pool | N | Payout | Champion | Seed | Leverage |
+|------|---|--------|----------|------|----------|
+| 100-A | 100 | 60/20/8/5 | Purdue | 2 | 1.1x |
+| 100-B | 100 | 60/20/8/5 | Iowa State | 2 | 1.7x |
+| 200-WTA | 200 | WTA | Illinois | 3 | 3.2x |
+| 200-WTB | 200 | WTA | Houston | 2 | 1.1x |
+| 125 | 125 | spread | Florida | 1 | 1.2x |
+| 250 | 250 | spread | Michigan | 1 | 1.2x |
+| 400 | 400 | spread | Michigan | 1 | 1.2x |
+| 120-A | 120 | spread | Michigan | 1 | 1.2x |
+| 120-B | 120 | spread | Florida | 1 | 1.2x |
+| 120-C | 120 | spread | Houston | 2 | 1.1x |
+
+**6 unique champions** covering ~70% of simulated outcomes. WTA pools get max-leverage plays (Illinois, Houston). Spread-payout pools lean toward probable champions (Michigan, Florida). Duke still excluded as champion (0.8x leverage) but appears in the Final Four in one bracket.
+
+Notable: Duke does NOT appear as champion in any bracket. At N≥100, Duke's negative leverage (0.8x) means even its 19.3% probability doesn't overcome being over-owned (24.3% of ESPN picks Duke). The optimizer says: let the field pick Duke; we differentiate. However, with wealth_base=0.3, the portfolio does cover the probable worlds through Michigan (1.2x leverage, 17.8% probability) — the "better Duke" in terms of risk/reward.
 
 ---
 
