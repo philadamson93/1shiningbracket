@@ -1,7 +1,6 @@
 # Bracket Optimizer Architecture
 
-**Last updated:** March 18, 2026
-**Brackets due:** March 19, 12:15 PM ET
+**Last updated:** March 19, 2026
 
 ---
 
@@ -101,10 +100,11 @@ The simulation engine already does steps 1-3. We just need to close the loop: us
 │  ├── FIELD_SIZE = 250                                   │
 │  ├── NUM_BRACKETS = 10                                  │
 │  ├── PAYOUT = {1: 0.60, 2: 0.20, 3: 0.10, 4: 0.05}   │
-│  ├── M_SIMS = 1000                                     │
-│  ├── N_OPPONENTS = 250                                  │
-│  ├── SIGMA = calibrated from historical 538 error       │
-│  └── MODEL_WEIGHT = blend of model vs market for picks  │
+│  ├── M_SIMS = 2000                                     │
+│  ├── N_OPPONENTS = 1000                                 │
+│  ├── N_RESTARTS = 20 (multi-start hill-climbing)        │
+│  ├── SIGMA = 0.27 (calibrated from historical 538 error)│
+│  └── MODEL_WEIGHT = 0.35 (blend model vs market)        │
 └─────────────────────────────────────────────────────────┘
                           │
                           ▼
@@ -148,12 +148,11 @@ The simulation engine already does steps 1-3. We just need to close the loop: us
 | ESPN scraper | `scrape_espn_picks.py` | **DONE** | Gambit API, 2023-2026 |
 | DK scraper | `scrape_dk_odds.py` | **DONE** | Hardcoded odds, vig-stripped |
 | Yahoo scraper | `scrape_yahoo_picks.py` | **DONE** (deprecated) | Replaced by ESPN |
-| Sim engine | `sim_engine.py` | **TO BUILD** | Extract from backtest_sim.py, add sigma |
-| Bracket maker | `bracket_maker.py` | **TO BUILD** | Hill-climbing + portfolio optimization |
-| Backtest (sim) | `backtest_sim.py` | **NEEDS REFACTOR** | Add model separation, use sim_engine |
-| Backtest (champ) | `backtest_harness.py` | **DONE** | 11-year champion-only |
-| Old optimizer | `bracket_optimizer.py` | **DEPRECATED** | Replaced by bracket_maker |
-| Old generator | `bracket_generator.py` | **DEPRECATED** | Replaced by bracket_maker |
+| Sim engine | `sim_engine.py` | **DONE** | Game tree, simulation, scoring, hill-climbing with restarts |
+| Bracket maker | `bracket_maker.py` | **DONE** | Kelly portfolio optimizer with multi-start hill-climbing |
+| Backtest (kelly) | `backtest_kelly.py` | **DONE** | Single-seed historical validation with restarts (avg 93.5th pctile) |
+| Backtest (MC) | `backtest_mc.py` | **DONE** | Monte Carlo backtest with restarts (median 91.6th pctile) |
+| Test suite | `tests/` | **DONE** | 138 tests covering all modules |
 
 ---
 

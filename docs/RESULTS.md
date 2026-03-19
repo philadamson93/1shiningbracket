@@ -147,19 +147,19 @@ This reveals an important limitation: **when one team dominates both the model a
 
 ## 2026 Projections
 
-### Simulated Champion Distribution (M=10,000, ESPN data as of 172M brackets)
+### Simulated Champion Distribution (M=3,000, σ=0.27, Paine+DK blend)
 
 | Team | Sim % | Model % | Public % | Leverage |
 |------|-------|---------|----------|----------|
-| Duke | 19.3% | 19.6% | 24.3% | 0.8x (FADE) |
-| Michigan | 17.9% | 17.3% | 14.2% | 1.2x |
-| Arizona | 16.2% | 14.7% | 20.1% | 0.7x (FADE) |
-| Florida | 10.3% | 9.1% | 7.5% | 1.2x |
-| Houston | 8.1% | 6.8% | 6.0% | 1.1x |
-| Iowa State | 5.9% | 4.8% | 2.8% | 1.7x (VALUE) |
-| Illinois | 5.2% | 4.4% | 1.3% | **3.3x (STRONG VALUE)** |
-| Purdue | 5.1% | 3.3% | 3.0% | 1.1x |
-| UConn | 3.5% | 2.1% | 3.6% | 0.6x (FADE) |
+| Duke | 23.1% | 19.8% | 23.7% | 0.8x (FADE) |
+| Michigan | 20.4% | 17.3% | 14.2% | 1.2x |
+| Arizona | 17.5% | 15.7% | 20.6% | 0.8x (FADE) |
+| Florida | 10.3% | 8.8% | 7.6% | 1.2x |
+| Houston | 7.2% | 6.6% | 6.2% | 1.1x |
+| Purdue | 5.1% | 3.9% | 3.0% | 1.3x |
+| Iowa State | 4.6% | 4.5% | 2.8% | 1.6x (VALUE) |
+| Illinois | 4.1% | 4.4% | 1.3% | **3.4x (STRONG VALUE)** |
+| UConn | 2.7% | 2.1% | 3.6% | 0.6x (FADE) |
 
 ### Key Leverage Findings
 
@@ -207,34 +207,51 @@ At `wealth_base=0.3` (current default), the optimizer covers probable worlds:
 
 The lower wealth base says: "the marginal dollar matters more when I haven't won yet." This creates real pressure to cover the Duke/Michigan/Arizona worlds (which represent 53% of outcomes) rather than piling into high-leverage longshots.
 
-### Final 2026 Portfolio (M=2000, N_OPP=1000, 20 restarts, wealth_base=0.3)
+### Final 2026 Portfolio (M=3000, N_OPP=2000, 20 restarts, wealth_base=0.2)
 
-Run March 19, 2026 with live odds (DK/BetMGM/BetRivers via The Odds API) and
-247M ESPN brackets. 20 hill-climb restarts per bracket. Corrected bracket
-structure: East vs South, West vs Midwest in Final Four.
+Run March 19, 2026. Data: Paine composite model blended with DraftKings
+implied odds (35/65 model/market), ESPN Gambit API public picks (64 teams).
+Fixed DK data: resolved SMU/Miami FL mislabeling, corrected Miami FL R1
+implied probability. Removed broken per-region normalization — raw
+probabilities used throughout (get_game_prob uses ratios, so normalization
+was a no-op for intra-regional games and harmful for cross-regional).
 
 | # | Pool | N | Champion | Kelly EV | E8-E | E8-W | E8-S | E8-MW |
 |---|------|---|----------|----------|------|------|------|-------|
-| 1 | 40d_bc_y3_A | 110 | Iowa State | 0.0955 | Michigan State | Purdue | Illinois | Iowa State |
-| 2 | 40d_bc_y3_B | 110 | Florida | 0.0771 | UConn | Purdue | Florida | Iowa State |
-| 3 | Madness26_A | 210 | Michigan | 0.0512 | Michigan State | Arizona | Illinois | Michigan |
-| 4 | Madness26_B | 210 | Arizona | 0.0416 | Kansas | Arizona | Illinois | Iowa State |
-| 5 | 50d_BC_A | 78 | Michigan | 0.0737 | UConn | Purdue | Houston | Michigan |
-| 6 | 25d_BC_A | 133 | Duke | 0.0445 | Duke | Purdue | Illinois | Iowa State |
-| 7 | MoneyPit | 525 | Illinois | 0.0175 | Michigan State | Purdue | Illinois | Michigan |
-| 8 | Cognac_A | 124 | Houston | 0.0438 | UConn | Purdue | Houston | Iowa State |
-| 9 | Cognac_B | 124 | Florida | 0.0399 | UConn | Purdue | Florida | Virginia |
-| 10 | Cognac_C | 124 | Duke | 0.0379 | Duke | Purdue | Houston | Alabama |
+| 1 | 40d_bc_y3_A | 110 | Purdue | 0.1092 | Duke | Purdue | Illinois | Iowa State |
+| 2 | 40d_bc_y3_B | 110 | Michigan | 0.0900 | UConn | Arizona | Illinois | Michigan |
+| 3 | Madness26_A | 210 | Iowa State | 0.0553 | UConn | Purdue | Florida | Iowa State |
+| 4 | Madness26_B | 210 | Arizona | 0.0503 | Michigan State | Arizona | Illinois | Iowa State |
+| 5 | 50d_BC_A | 78 | Florida | 0.0955 | UConn | Purdue | Florida | Iowa State |
+| 6 | 25d_BC_A | 133 | Duke | 0.0589 | Duke | Purdue | Illinois | Virginia |
+| 7 | MoneyPit | 525 | Houston | 0.0222 | UConn | Gonzaga | Houston | Iowa State |
+| 8 | Cognac_A | 124 | Michigan | 0.0517 | Kansas | Purdue | Houston | Michigan |
+| 9 | Cognac_B | 124 | Duke | 0.0491 | Duke | Purdue | Florida | Iowa State |
+| 10 | Cognac_C | 124 | Michigan | 0.0463 | Duke | Arizona | Illinois | Michigan |
 
-**7 unique champions:** Iowa State, Florida (×2), Michigan (×2), Arizona, Duke (×2), Illinois, Houston
+**7 unique champions:** Michigan (×3), Duke (×2), Purdue, Iowa State, Arizona, Florida, Houston
+
+#### Champion distribution
+
+| Champion | Count | Model % | Public % | Leverage |
+|----------|-------|---------|----------|----------|
+| Michigan | 3/10 | 17.3% | 14.2% | 1.2x |
+| Duke | 2/10 | 19.8% | 23.7% | 0.8x (fade) |
+| Purdue | 1/10 | 3.9% | 3.0% | 1.3x |
+| Iowa State | 1/10 | 4.5% | 2.8% | 1.6x |
+| Arizona | 1/10 | 15.7% | 20.6% | 0.8x (fade) |
+| Florida | 1/10 | 8.8% | 7.6% | 1.2x |
+| Houston | 1/10 | 6.6% | 6.2% | 1.1x |
 
 #### Key patterns
 
-- **Purdue** West E8 in 8/10 — strongest leverage play in the bracket (2.12x)
-- **Illinois** South E8 in 5/10 — 3.0x leverage as champion for MoneyPit (N=525)
-- **Iowa State** MW E8 in 5/10 — 1.58x leverage
-- More R1 upsets than prior run: Utah State/Villanova (8/10), Iowa/Clemson (6/10),
-  Missouri/Miami (5/10), VCU/UNC (2/10), plus scattered Akron, Texas, Texas A&M picks
+- **Purdue** West E8 in 6/10 — strong leverage play (model > public)
+- **Iowa State** MW E8 in 6/10 — 1.6x leverage, highest among frequent picks
+- **Illinois** South E8 in 5/10 — model significantly higher than public
+- **Duke** E8-East in 4/10, **UConn** E8-East in 4/10 — split the East
+- **MoneyPit** (N=525, biggest field) went contrarian with Houston/Gonzaga — Kelly favors differentiation in large pools
+- R1 upsets: Utah State/Villanova (8/10), Iowa/Clemson (8/10), Saint Louis/Georgia (4/10)
+- Duke only champion in 2/10 despite being chalk — correctly faded (0.8x leverage)
 
 ---
 
