@@ -228,6 +228,8 @@ def parse_args():
     parser.add_argument("--wealth-base", type=float, default=WEALTH_BASE)
     parser.add_argument("--seed", type=int, default=RANDOM_SEED)
     parser.add_argument("--output", type=str, default="output/final_brackets.json")
+    parser.add_argument("--opponents", type=int, default=N_OPPONENTS,
+                        help="Number of opponent brackets per simulation")
     parser.add_argument("--restarts", type=int, default=N_RESTARTS,
                         help="Hill-climb restarts per bracket (shuffled order)")
     parser.add_argument("--pools", type=str, default="pools.toml",
@@ -271,7 +273,7 @@ def main():
     print(f"\nPrecomputing simulations...")
     t0 = time.time()
     precomputed = precompute_sims(our_probs, public, args.sigma, args.sims,
-                                  N_OPPONENTS, game_tree)
+                                  args.opponents, game_tree)
     print(f"  Done in {time.time()-t0:.1f}s")
 
     sim_champs = defaultdict(int)
