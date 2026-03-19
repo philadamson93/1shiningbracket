@@ -78,12 +78,13 @@ def load_pools(config_path="pools.toml"):
 # SIMULATION PARAMETERS
 # =============================================================================
 
-M_SIMS = 200
-N_OPPONENTS = 400
+M_SIMS = 2000
+N_OPPONENTS = 1000
 SIGMA = 0.27
 MODEL_WEIGHT = 0.35
 WEALTH_BASE = 0.3       # Lower = more diversification. 0.3 ≈ "I want at least one bracket to cash"
 RANDOM_SEED = 42
+N_RESTARTS = 20         # Hill-climb restarts per bracket (shuffled game order each time)
 
 
 # =============================================================================
@@ -91,10 +92,13 @@ RANDOM_SEED = 42
 # =============================================================================
 
 def build_portfolio(pools, model_probs, public_probs, game_tree, precomputed,
-                    wealth_base):
+                    wealth_base, n_restarts=N_RESTARTS):
     """
     Greedy Kelly portfolio: for each pool, hill-climb one bracket to maximize
     marginal log-wealth given all prior brackets.
+
+    Each bracket is optimized via n_restarts independent hill-climbs with
+    shuffled game traversal order. The best restart (highest Kelly EV) wins.
     """
     feeds_into = build_feeds_into(game_tree)
     locked = build_locked_games(model_probs, game_tree)
@@ -109,23 +113,30 @@ def build_portfolio(pools, model_probs, public_probs, game_tree, precomputed,
 
         start = make_chalk_bracket(model_probs, game_tree)
 
-        bracket, kelly_ev_val = hill_climb(
-            start, game_tree, model_probs, precomputed,
-            field_size, payout, existing_payouts, wealth_base,
-            feeds_into, locked)
+        best_bracket = None
+        best_ev = float("-inf")
+
+        for r in range(n_restarts):
+            bracket, kelly_ev_val = hill_climb(
+                start, game_tree, model_probs, precomputed,
+                field_size, payout, existing_payouts, wealth_base,
+                feeds_into, locked, shuffle=(r > 0))
+            if kelly_ev_val > best_ev:
+                best_bracket = bracket
+                best_ev = kelly_ev_val
 
         # Incrementally update existing_payouts
         for si, (outcome, opp_scores) in enumerate(precomputed):
-            sc = score_bracket_with_tree(bracket, outcome, game_tree)
+            sc = score_bracket_with_tree(best_bracket, outcome, game_tree)
             pos = estimate_position(sc, opp_scores, field_size)
             existing_payouts[si] += payout.get(pos, 0)
 
-        results.append((bracket, pool, kelly_ev_val))
+        results.append((best_bracket, pool, best_ev))
         elapsed = time.time() - t0
 
-        d = bracket_to_display(bracket)
+        d = bracket_to_display(best_bracket)
         print(f"  {pool['name']} (N={field_size}): champ={d['champion']:<16} "
-              f"kelly={kelly_ev_val:.6f} ({elapsed:.1f}s)")
+              f"kelly={best_ev:.6f} ({elapsed:.1f}s, {n_restarts} restarts)")
 
     return results
 
@@ -217,6 +228,8 @@ def parse_args():
     parser.add_argument("--wealth-base", type=float, default=WEALTH_BASE)
     parser.add_argument("--seed", type=int, default=RANDOM_SEED)
     parser.add_argument("--output", type=str, default="output/final_brackets.json")
+    parser.add_argument("--restarts", type=int, default=N_RESTARTS,
+                        help="Hill-climb restarts per bracket (shuffled order)")
     parser.add_argument("--pools", type=str, default="pools.toml",
                         help="Path to pool configuration file")
     return parser.parse_args()
@@ -232,8 +245,9 @@ def main():
     print("=" * 95)
     print("MARCH MADNESS BRACKET MAKER — Kelly Portfolio Optimizer")
     print("=" * 95)
-    print(f"Pools: {len(pools)} | Sims: {args.sims} | Sigma: {args.sigma} | "
-          f"ModelWeight: {args.model_weight} | WealthBase: {args.wealth_base}")
+    print(f"Pools: {len(pools)} | Sims: {args.sims} | Restarts: {args.restarts} | "
+          f"Sigma: {args.sigma} | ModelWeight: {args.model_weight} | "
+          f"WealthBase: {args.wealth_base}")
 
     print(f"\nPool configuration:")
     for p in pools:
@@ -269,7 +283,7 @@ def main():
 
     print(f"\nOptimizing portfolio...")
     results = build_portfolio(pools, our_probs, public, game_tree,
-                              precomputed, args.wealth_base)
+                              precomputed, args.wealth_base, args.restarts)
 
     print_summary(results, our_probs, public, game_tree)
     export_brackets(results, args.output)
