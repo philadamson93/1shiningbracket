@@ -1,6 +1,6 @@
 # Model Results & Historical Validation
 
-**Last updated:** March 18, 2026
+**Last updated:** March 19, 2026
 
 ---
 
@@ -10,7 +10,7 @@ We built a Kelly log-wealth portfolio optimizer that generates brackets by:
 
 1. **Simulating** M tournament outcomes from perturbed model probabilities (σ=0.27 in logit space)
 2. **Generating** N opponent brackets from ESPN public pick distributions
-3. **Hill-climbing** each bracket's 63 game picks to maximize marginal E[log(wealth)] across the portfolio
+3. **Hill-climbing with restarts** — each bracket runs R independent hill-climbs with shuffled game traversal order, keeping the best. This escapes local optima that trapped the single-pass optimizer.
 4. **Model separation**: tournament outcomes are simulated from "truth" (perturbed model), our picks use unperturbed model, opponents use public distribution
 
 The key insight: we're not trying to predict the tournament — we're trying to beat *other people's brackets* in specific pools. Leverage (model probability / public pick rate) determines which teams provide edge.
@@ -21,15 +21,17 @@ The key insight: we're not trying to predict the tournament — we're trying to 
 
 We ran the optimizer on 4 held-out years using 538 pre-tournament model probabilities and ESPN/mRchmadness public pick data. Brackets were scored against **actual tournament outcomes** and compared to the field (1000 simulated opponents from public pick distribution).
 
-### Results
+### Results (with 10 hill-climb restarts per bracket)
 
 | Year | Actual Champion | Chalk Score | Optimizer Best | vs Chalk | Field Percentile | Hit Champion? |
 |------|----------------|-------------|---------------|----------|-----------------|---------------|
-| 2018 | Villanova | 1220 | 1250 | **+30** | **94.5%** | Yes |
-| 2021 | Baylor | 720 | 910 | **+190** | **79.7%** | No |
-| 2022 | Kansas | 820 | 790 | -30 | 75.8% | No |
-| 2023 | UConn | 470 | 540 | **+70** | **100.0%** | No |
-| **Average** | | **808** | **873** | **+65** | **87.5%** | **1/4** |
+| 2018 | Villanova | 1220 | 1230 | **+10** | **93.7%** | Yes |
+| 2021 | Baylor | 720 | 1340 | **+620** | **98.4%** | Yes |
+| 2022 | Kansas | 820 | 860 | **+40** | **83.2%** | No |
+| 2023 | UConn | 470 | 450 | -20 | **88.3%** | No |
+| **Average** | | **808** | **970** | **+163** | **90.9%** | **2/4** |
+
+The biggest improvement from restarts is **2021 Baylor**: the optimizer now finds a Baylor bracket (+620 vs chalk) that was invisible to the single-pass hill-climber. This is exactly the "escape local optima" benefit restarts provide.
 
 ### ESPN-Wide Percentile (scored against 50,000 simulated ESPN brackets)
 
@@ -205,24 +207,49 @@ At `wealth_base=0.3` (current default), the optimizer covers probable worlds:
 
 The lower wealth base says: "the marginal dollar matters more when I haven't won yet." This creates real pressure to cover the Duke/Michigan/Arizona worlds (which represent 53% of outcomes) rather than piling into high-leverage longshots.
 
-### Final 2026 Portfolio (M=20,000, wealth_base=0.3)
+### Final 2026 Portfolio (M=2000, N_OPP=1000, 20 restarts, wealth_base=0.3)
 
-| Pool | N | Payout | Champion | Seed | Leverage |
-|------|---|--------|----------|------|----------|
-| 100-A | 100 | 60/20/8/5 | Purdue | 2 | 1.1x |
-| 100-B | 100 | 60/20/8/5 | Iowa State | 2 | 1.7x |
-| 200-WTA | 200 | WTA | Illinois | 3 | 3.2x |
-| 200-WTB | 200 | WTA | Houston | 2 | 1.1x |
-| 125 | 125 | spread | Florida | 1 | 1.2x |
-| 250 | 250 | spread | Michigan | 1 | 1.2x |
-| 400 | 400 | spread | Michigan | 1 | 1.2x |
-| 120-A | 120 | spread | Michigan | 1 | 1.2x |
-| 120-B | 120 | spread | Florida | 1 | 1.2x |
-| 120-C | 120 | spread | Houston | 2 | 1.1x |
+Run March 19, 2026 with live odds (DK/BetMGM/BetRivers via The Odds API) and
+247M ESPN brackets. 20 hill-climb restarts per bracket.
 
-**6 unique champions** covering ~70% of simulated outcomes. WTA pools get max-leverage plays (Illinois, Houston). Spread-payout pools lean toward probable champions (Michigan, Florida). Duke still excluded as champion (0.8x leverage) but appears in the Final Four in one bracket.
+| # | Pool | N | Champion | Kelly EV | E8-E | E8-W | E8-S | E8-MW |
+|---|------|---|----------|----------|------|------|------|-------|
+| 1 | 40d_bc_y3_A | 110 | Iowa State | 0.0905 | UConn | Purdue | Illinois | Iowa State |
+| 2 | 40d_bc_y3_B | 110 | Michigan | 0.0751 | UConn | Purdue | Illinois | Michigan |
+| 3 | Madness26_A | 210 | Duke | 0.0483 | Duke | Gonzaga | Illinois | Virginia |
+| 4 | Madness26_B | 210 | Florida | 0.0409 | UConn | Arkansas | Florida | Iowa State |
+| 5 | 50d_BC_A | 78 | Florida | 0.0671 | UConn | Purdue | Florida | Iowa State |
+| 6 | 25d_BC_A | 133 | Arizona | 0.0471 | UConn | Arizona | Illinois | Iowa State |
+| 7 | MoneyPit | 525 | Houston | 0.0180 | UConn | Purdue | Houston | Iowa State |
+| 8 | Cognac_A | 124 | Michigan | 0.0440 | UConn | Gonzaga | Houston | Michigan |
+| 9 | Cognac_B | 124 | Duke | 0.0372 | Duke | Purdue | Florida | Alabama |
+| 10 | Cognac_C | 124 | Houston | 0.0361 | UConn | Purdue | Houston | Iowa State |
 
-Notable: Duke does NOT appear as champion in any bracket. At N≥100, Duke's negative leverage (0.8x) means even its 19.3% probability doesn't overcome being over-owned (24.3% of ESPN picks Duke). The optimizer says: let the field pick Duke; we differentiate. However, with wealth_base=0.3, the portfolio does cover the probable worlds through Michigan (1.2x leverage, 17.8% probability) — the "better Duke" in terms of risk/reward.
+**6 unique champions:** Iowa State, Michigan (×2), Duke (×2), Florida (×2), Arizona, Houston (×2)
+
+#### Simulated Performance (2000 sims × 1000 opponents)
+
+| Pool | N | Champion | Avg Score | Avg Pctile | Win% | Top-3% | Cash% |
+|------|---|----------|-----------|------------|------|--------|-------|
+| 40d_bc_y3_A | 110 | Iowa State | 752 | 45.1% | 6.7% | 10.3% | 15.6% |
+| 40d_bc_y3_B | 110 | Michigan | 831 | 54.4% | 4.4% | 10.3% | 20.4% |
+| Madness26_A | 210 | Duke | 776 | 45.4% | 2.6% | 5.0% | 8.8% |
+| Madness26_B | 210 | Florida | 748 | 44.6% | 2.5% | 5.5% | 12.1% |
+| 50d_BC_A | 78 | Florida | 806 | 52.0% | 5.3% | 13.4% | 22.1% |
+| 25d_BC_A | 133 | Arizona | 793 | 49.1% | 4.7% | 7.7% | 12.5% |
+| MoneyPit | 525 | Houston | 752 | 46.1% | 0.9% | 2.5% | 5.7% |
+| Cognac_A | 124 | Michigan | 818 | 52.2% | 4.0% | 7.2% | 14.9% |
+| Cognac_B | 124 | Duke | 846 | 56.1% | 2.5% | 5.2% | 12.8% |
+| Cognac_C | 124 | Houston | 749 | 44.8% | 3.3% | 7.7% | 15.3% |
+| **Average** | | | **787** | **49.0%** | **3.7%** | **7.5%** | **14.0%** |
+
+| Metric | Value | vs Random |
+|--------|-------|-----------|
+| Avg percentile | 49.0% | ~50% (neutral on score) |
+| Avg win rate | 3.7% per bracket | 3-4× random |
+| Avg top-3 rate | 7.5% | ~3× random |
+| Avg cash rate | 14.0% | ~2× random |
+| **P(≥1 pool win)** | **31.6%** | ~5-10% for 10 random brackets |
 
 ---
 
