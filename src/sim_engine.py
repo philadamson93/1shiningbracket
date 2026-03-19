@@ -240,6 +240,10 @@ def blend_probs(model, market, model_weight=0.35):
             elif kp > 0:
                 blended[team][rd] = kp
 
+    # Final normalization pass on the blend to clean up drift from
+    # teams that only exist in one source
+    _normalize_source(blended)
+
     return blended
 
 
