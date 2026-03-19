@@ -85,7 +85,43 @@ round6 = P(win championship)     → our "Championship"
 | Parameter | Value | Source |
 |-----------|-------|--------|
 | SIGMA_LOGIT | 0.27 | src/calibrate_sigma.py: RMS calibration error from 1482 team×round observations (2018-2023) |
-| MODEL_WEIGHT | 0.35 | User preference: lean DK (market); models agree within ~1% |
+| MODEL_WEIGHT | 0.35 | Lean market (65%). Justified because sportsbooks price in injuries; the Paine composite does not. |
+
+## Model vs Market Gaps (2026)
+
+The Paine composite does **not** adjust for injuries or player availability. It averages
+6 season-long rating systems (BPI, KenPom, Torvik, TeamRankings, Sports-Reference, JThom).
+Sportsbooks reprice continuously as injury news breaks.
+
+Key gaps attributable to injuries (as of March 19, 2026):
+
+| Team | Model | Market | Gap | Likely cause |
+|------|-------|--------|-----|-------------|
+| Duke | 23.8% | 17.6% | +6.1% | Caleb Foster (broken foot), Patrick Ngongba (foot) both OUT |
+| Louisville | higher | lower | | Mikel Brown Jr. OUT first weekend (back) |
+| Gonzaga | higher | lower | | Braden Huff OUT since Jan (knee) |
+| Purdue | 5.7% | 3.0% | +2.7% | No injury — genuine model/market disagreement |
+| Illinois | 5.5% | 3.4% | +2.1% | No injury — genuine model/market disagreement |
+
+MODEL_WEIGHT=0.35 (65% market) is the right call: the market is the more informed
+source on injuries and late-breaking information.
+
+## The Odds API
+
+Live odds sourced from [The Odds API](https://the-odds-api.com/) (free tier, 500 credits/month).
+
+```
+# Championship futures (outrights) — DraftKings, BetMGM, BetRivers
+GET https://api.the-odds-api.com/v4/sports/basketball_ncaab_championship_winner/odds
+    ?regions=us&markets=outrights&oddsFormat=american&apiKey=KEY
+
+# R1 game moneylines
+GET https://api.the-odds-api.com/v4/sports/basketball_ncaab/odds
+    ?regions=us&markets=h2h&oddsFormat=american&apiKey=KEY
+```
+
+Intermediate rounds (S16, E8, F4) are interpolated log-linearly between R1 and
+championship using historical seed-based advancement ratios.
 
 ## ESPN Gambit API
 
@@ -101,6 +137,6 @@ Filter by round: &filter={"filterPropositionScoringPeriodIds":{"value":[ROUND]}}
 
 ```bash
 python3 src/scrape_espn_picks.py        # Refresh ESPN public picks (run close to deadline)
-python3 src/scrape_dk_odds.py           # Refresh DK odds (manual — update hardcoded odds)
+ODDS_API_KEY=xxx python3 src/fetch_odds.py  # Pull live odds from DraftKings/BetMGM/BetRivers
 python3 src/calibrate_sigma.py          # Recompute sigma (only if adding new historical data)
 ```
