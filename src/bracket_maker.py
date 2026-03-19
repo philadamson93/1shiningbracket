@@ -78,11 +78,11 @@ def load_pools(config_path="pools.toml"):
 # SIMULATION PARAMETERS
 # =============================================================================
 
-M_SIMS = 2000
-N_OPPONENTS = 1000
+M_SIMS = 3000
+N_OPPONENTS = 2000
 SIGMA = 0.27
 MODEL_WEIGHT = 0.35
-WEALTH_BASE = 0.3       # Lower = more diversification. 0.3 ≈ "I want at least one bracket to cash"
+WEALTH_BASE = 0.2       # Lower = more diversification. 0.2 ≈ "I want at least one bracket to cash"
 RANDOM_SEED = 42
 N_RESTARTS = 20         # Hill-climb restarts per bracket (shuffled game order each time)
 

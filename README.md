@@ -85,12 +85,12 @@ payout = [100]
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--sims` | Number of Monte Carlo tournament simulations | 2000 |
+| `--sims` | Number of Monte Carlo tournament simulations | 3000 |
 | `--sigma` | Model uncertainty in logit space (calibrated from 538 data) | 0.27 |
 | `--model-weight` | Blend: 0 = pure market, 1 = pure model | 0.35 |
-| `--wealth-base` | Kelly diversification: lower = "win at least 1 pool" | 0.3 |
+| `--wealth-base` | Kelly diversification: lower = "win at least 1 pool" | 0.2 |
 | `--restarts` | Hill-climb restarts per bracket (shuffled game order) | 20 |
-| `--opponents` | Opponent brackets per simulation | 1000 |
+| `--opponents` | Opponent brackets per simulation | 2000 |
 | `--seed` | Random seed for reproducibility | 42 |
 
 ## How It Works
