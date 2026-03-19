@@ -85,10 +85,12 @@ payout = [100]
 
 | Flag | Description | Default |
 |------|-------------|---------|
-| `--sims` | Number of Monte Carlo tournament simulations | 200 |
+| `--sims` | Number of Monte Carlo tournament simulations | 2000 |
 | `--sigma` | Model uncertainty in logit space (calibrated from 538 data) | 0.27 |
 | `--model-weight` | Blend: 0 = pure market, 1 = pure model | 0.35 |
 | `--wealth-base` | Kelly diversification: lower = "win at least 1 pool" | 0.3 |
+| `--restarts` | Hill-climb restarts per bracket (shuffled game order) | 20 |
+| `--opponents` | Opponent brackets per simulation | 1000 |
 | `--seed` | Random seed for reproducibility | 42 |
 
 ## How It Works
@@ -96,7 +98,7 @@ payout = [100]
 1. **Blend** model probabilities (Paine) with market odds (DraftKings) for each team × round
 2. **Simulate** M tournament outcomes from perturbed probabilities (model separation — truth ≠ model)
 3. **Generate** N opponent brackets per outcome from ESPN public pick distribution
-4. **Hill-climb** each bracket: flip individual game picks, keep if expected payout improves (Clair & Letscher 2007)
+4. **Hill-climb with restarts** — each bracket runs multiple independent hill-climbs with shuffled game traversal order, keeping the best to escape local optima (Clair & Letscher 2007)
 5. **Portfolio optimization**: each bracket maximizes marginal log-wealth contribution given prior brackets (Kelly criterion + Haugh & Singal 2021 greedy submodular selection)
 
 Different pool sizes naturally produce different brackets — small pools favor chalk, large pools favor leverage (contrarian picks where model probability exceeds public pick rate).
@@ -118,14 +120,15 @@ The `--wealth-base` parameter controls the tradeoff between "maximize total EV" 
 
 ## Historical Validation
 
-Tested on 4 held-out years (2018, 2021, 2022, 2023) using 538 pre-tournament predictions and ESPN public picks, scored against actual tournament outcomes and a field of 50,000 simulated ESPN brackets.
+Tested on 4 held-out years (2018, 2021, 2022, 2023) using 538 pre-tournament predictions and ESPN public picks, scored against actual tournament outcomes and a field of 10,000 simulated ESPN brackets. Multi-start hill-climbing with restarts.
 
-| Year | Champion | Chalk Score | Optimizer Best | vs Chalk | ESPN Percentile |
-|------|----------|-------------|---------------|----------|----------------|
-| 2018 | Villanova | 1220 | 1280 | +60 | 95.9% |
-| 2021 | Baylor | 720 | 930 | +210 | 83.0% |
-| 2022 | Kansas | 820 | 780 | -40 | 76.1% |
-| 2023 | UConn | 470 | 470 | +0 | 97.1% |
+| Year | Champion | Chalk Score | Optimizer Best | vs Chalk | Field Percentile | Hit Champion? |
+|------|----------|-------------|---------------|----------|-----------------|---------------|
+| 2018 | Villanova | 1140 | 1160 | +20 | 93.3% | Yes |
+| 2021 | Baylor | 720 | 1450 | **+730** | **99.6%** | Yes |
+| 2022 | Kansas | 780 | 830 | +50 | 83.9% | No |
+| 2023 | UConn | 550 | 570 | +20 | 97.2% | No |
+| **Average** | | | | **+205** | **93.5%** | **2/4** |
 
 See `docs/RESULTS.md` for full analysis.
 
