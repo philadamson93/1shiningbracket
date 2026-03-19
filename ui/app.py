@@ -220,7 +220,7 @@ letter-spacing:.5px;text-align:center;padding-bottom:2px}}
 border:1px solid #e8e8e8;background:#f7f7f7;color:#bbb;font-weight:400;
 white-space:nowrap;overflow:hidden;line-height:{ROW_H - 3}px}}
 .t.w{{background:#fff;color:#222;font-weight:600;border-color:#d0d0d0}}
-.t.cp{{border-left:3px solid #eab308;background:#fefce8}}
+.t.cp{{border-left:3px solid #eab308;background:#fff}}
 .t .s{{font-weight:700;width:20px;text-align:right;margin-right:5px;
 flex-shrink:0}}
 .t.w .s{{color:#666}}
@@ -333,17 +333,17 @@ text-align:center;white-space:nowrap}}
     # but render as a clean mini-bracket
     P.append(f"""<div class="bt">Final Four & Championship</div>
 <div style="display:grid;grid-template-columns:{TW}px {CW}px {TW}px {CW}px auto;
-grid-template-rows:repeat(4,{ROW_H}px);width:fit-content;row-gap:1px;
+grid-template-rows:repeat(3,{ROW_H}px);width:fit-content;row-gap:1px;
 align-items:stretch;margin-bottom:12px">
 <div class="bh" style="grid-column:1;grid-row:1">Semi 1 (East v South)</div>
 <div style="grid-column:2;grid-row:1"></div>
 <div class="bh" style="grid-column:3;grid-row:1">Championship</div>
 <div style="grid-column:4;grid-row:1"></div>
 <div class="bh" style="grid-column:5;grid-row:1">Semi 2 (West v MW)</div>""")
-    # Semi 1: rows 2-3
+    # Semi 1 (East vs South): ff[0]=East, ff[2]=South
     P.append(ff_td(ff[0], ff_w[0], True).replace(
         'class="', f'style="grid-column:1;grid-row:2" class="'))
-    P.append(ff_td(ff[1], ff_w[0], False).replace(
+    P.append(ff_td(ff[2], ff_w[0], False).replace(
         'class="', f'style="grid-column:1;grid-row:3" class="'))
     # Connector semi1 → champ
     P.append(f'<div class="cn" style="grid-column:2;grid-row:2/4"></div>')
@@ -356,17 +356,16 @@ align-items:stretch;margin-bottom:12px">
     P.append(f'<div class="cn" style="grid-column:4;grid-row:2/4;'
              f'border-right:none;border-left:2px solid #ddd;'
              f'border-radius:4px 0 0 4px"></div>')
-    # Semi 2: rows 2-3
-    P.append(ff_td(ff[2], ff_w[1], True).replace(
+    # Semi 2 (West vs Midwest): ff[1]=West, ff[3]=Midwest
+    P.append(ff_td(ff[1], ff_w[1], True).replace(
         'class="', f'style="grid-column:5;grid-row:2" class="'))
     P.append(ff_td(ff[3], ff_w[1], False).replace(
         'class="', f'style="grid-column:5;grid-row:3" class="'))
-    # Champion banner: row 4, spanning all columns
-    seed = SEED_MAP.get(champ, "?")
-    P.append(f'<div class="cb" style="grid-column:1/6;grid-row:4;'
-             f'margin-top:4px">'
-             f'\U0001F3C6 Champion: ({seed}) {champ}</div>')
     P.append("</div>")
+    # Champion banner — outside the grid
+    seed = SEED_MAP.get(champ, "?")
+    P.append(f'<div class="cb" style="margin-top:8px;max-width:fit-content">'
+             f'\U0001F3C6 Champion: ({seed}) {champ}</div>')
 
     return "\n".join(P)
 
@@ -640,7 +639,7 @@ else:
             with semi1:
                 st.markdown(f"**Semifinal 1** (East vs South)")
                 st.markdown(f"- {fmt_seed(ff[0])}")
-                st.markdown(f"- {fmt_seed(ff[1])}")
+                st.markdown(f"- {fmt_seed(ff[2])}")
             with arrow1:
                 st.markdown("&nbsp;")
                 st.markdown(f"**{fmt_seed(ff_w[0])}** \u2192")
@@ -652,7 +651,7 @@ else:
                 st.markdown(f"\u2190 **{fmt_seed(ff_w[1])}**")
             with semi2:
                 st.markdown(f"**Semifinal 2** (West vs Midwest)")
-                st.markdown(f"- {fmt_seed(ff[2])}")
+                st.markdown(f"- {fmt_seed(ff[1])}")
                 st.markdown(f"- {fmt_seed(ff[3])}")
 
             st.divider()
