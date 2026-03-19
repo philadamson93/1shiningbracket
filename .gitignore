@@ -1,3 +1,6 @@
+# Personal pool config (pools.toml is the example; my_pools.toml is yours)
+my_pools.toml
+
 # Python
 __pycache__/
 *.pyc
