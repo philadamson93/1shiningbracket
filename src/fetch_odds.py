@@ -295,8 +295,9 @@ def main():
     for region in regions:
         region_rows = [r for r in rows if r["region"] == region]
 
-        # Match model/public semantics: R1=8, S16(=R2 reach)=4, E8(=S16 reach)=2
-        for col, target in [("S16_implied", 4.0), ("E8_implied", 2.0)]:
+        # Normalize to match model/public cumulative advancement semantics:
+        # S16 = P(reach E8) = 2 per region, E8 = P(win region) = 1, F4 = P(reach champ game) = 0.5
+        for col, target in [("S16_implied", 2.0), ("E8_implied", 1.0), ("F4_implied", 0.5)]:
             total = sum(r[col] for r in region_rows)
             if total > 0:
                 scale = target / total

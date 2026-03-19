@@ -175,21 +175,59 @@ def perturb_probs(probs, sigma):
     return perturbed
 
 
+def _normalize_source(probs):
+    """
+    Normalize a probability source so per-region sums match cumulative
+    advancement semantics: R1=8, R2=4, S16=2, E8=1, F4=0.5, Champ=0.25.
+    """
+    # Build region lookup from BRACKET
+    team_region = {}
+    for region, teams in BRACKET.items():
+        for team, _ in teams:
+            team_region[team] = region
+
+    targets = {"R1": 8.0, "R2": 4.0, "S16": 2.0, "E8": 1.0,
+               "F4": 0.5, "Championship": 0.25}
+
+    for rd, target in targets.items():
+        for region in REGIONS:
+            region_teams = [t for t in probs if team_region.get(t) == region]
+            total = sum(probs.get(t, {}).get(rd, 0) for t in region_teams)
+            if total > 0:
+                scale = target / total
+                for t in region_teams:
+                    if rd in probs.get(t, {}):
+                        probs[t][rd] *= scale
+
+    return probs
+
+
 def blend_probs(model, market, model_weight=0.35):
     """
     Blend model and market probabilities.
+    Normalizes each source to consistent per-region sums before blending.
     Interpolates missing R2 from market data geometrically: R2 ≈ sqrt(R1 × S16).
     """
+    # Deep copy to avoid mutating originals
+    import copy
+    model = copy.deepcopy(model)
+    market = copy.deepcopy(market)
+
+    # Interpolate missing R2 in market data
+    for team, k in market.items():
+        if "R2" not in k and "R1" in k and "S16" in k:
+            k["R2"] = math.sqrt(k["R1"] * k["S16"])
+
+    # Normalize each source independently
+    _normalize_source(model)
+    _normalize_source(market)
+
+    # Blend
     all_teams = set(list(model.keys()) + list(market.keys()))
     blended = {}
     for team in all_teams:
         m = model.get(team, {})
         k = market.get(team, {})
-
-        # Interpolate missing R2 in market data
-        if "R2" not in k and "R1" in k and "S16" in k:
-            k = dict(k)
-            k["R2"] = math.sqrt(k["R1"] * k["S16"])
 
         blended[team] = {}
         for rd in ROUND_NAMES:
@@ -201,7 +239,7 @@ def blend_probs(model, market, model_weight=0.35):
                 blended[team][rd] = mp
             elif kp > 0:
                 blended[team][rd] = kp
-            # else: leave missing (team not in this round's data)
+
     return blended
 
 
