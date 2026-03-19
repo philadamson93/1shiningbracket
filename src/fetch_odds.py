@@ -295,7 +295,8 @@ def main():
     for region in regions:
         region_rows = [r for r in rows if r["region"] == region]
 
-        for col, target in [("S16_implied", 4.0), ("E8_implied", 1.0), ("F4_implied", 1.0)]:
+        # Match model/public semantics: R1=8, S16(=R2 reach)=4, E8(=S16 reach)=2
+        for col, target in [("S16_implied", 4.0), ("E8_implied", 2.0)]:
             total = sum(r[col] for r in region_rows)
             if total > 0:
                 scale = target / total
