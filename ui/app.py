@@ -335,11 +335,11 @@ text-align:center;white-space:nowrap}}
 <div style="display:grid;grid-template-columns:{TW}px {CW}px {TW}px {CW}px auto;
 grid-template-rows:repeat(4,{ROW_H}px);width:fit-content;row-gap:1px;
 align-items:stretch;margin-bottom:12px">
-<div class="bh" style="grid-column:1;grid-row:1">Semi 1 (East v West)</div>
+<div class="bh" style="grid-column:1;grid-row:1">Semi 1 (East v South)</div>
 <div style="grid-column:2;grid-row:1"></div>
 <div class="bh" style="grid-column:3;grid-row:1">Championship</div>
 <div style="grid-column:4;grid-row:1"></div>
-<div class="bh" style="grid-column:5;grid-row:1">Semi 2 (South v MW)</div>""")
+<div class="bh" style="grid-column:5;grid-row:1">Semi 2 (West v MW)</div>""")
     # Semi 1: rows 2-3
     P.append(ff_td(ff[0], ff_w[0], True).replace(
         'class="', f'style="grid-column:1;grid-row:2" class="'))
@@ -439,6 +439,9 @@ with st.sidebar:
                           help="Should be >= field size")
         wealth_base = st.slider("Kelly wealth base", 0.1, 5.0, 1.0, 0.1,
                                 help="Higher = less diversification across portfolio")
+        n_restarts = st.slider("Hill-climb restarts", 1, 30, 10, 1,
+                               help="More restarts = better optimization, slower. "
+                                    "Each restart shuffles game order to escape local optima.")
         rand_seed = st.number_input("Random seed", value=42, step=1)
 
     st.divider()
@@ -473,25 +476,33 @@ if generate:
         locked = build_locked_games(our_probs, game_tree)
 
         if num_brackets == 1:
-            st.write("Hill climbing (single bracket)...")
+            st.write(f"Hill climbing (single bracket, {n_restarts} restarts)...")
             chalk = make_chalk_bracket(our_probs, game_tree)
             existing_payouts = [0.0] * len(precomputed)
-            bracket, kelly_ev = hill_climb(
-                chalk, game_tree, our_probs, precomputed,
-                field_size, payout, existing_payouts, wealth_base,
-                feeds_into, locked,
-            )
+
+            best_bracket = None
+            best_ev = float("-inf")
+            for r in range(n_restarts):
+                bracket, kelly_ev = hill_climb(
+                    chalk, game_tree, our_probs, precomputed,
+                    field_size, payout, existing_payouts, wealth_base,
+                    feeds_into, locked, shuffle=(r > 0),
+                )
+                if kelly_ev > best_ev:
+                    best_bracket = bracket
+                    best_ev = kelly_ev
+
             st.session_state["brackets"] = [
-                (list(bracket),
+                (list(best_bracket),
                  {"name": "My Pool", "field_size": field_size, "payout": payout},
-                 kelly_ev),
+                 best_ev),
             ]
         else:
-            st.write(f"Building {num_brackets}-bracket portfolio...")
+            st.write(f"Building {num_brackets}-bracket portfolio ({n_restarts} restarts each)...")
             pools = [{"name": f"Bracket {i+1}", "field_size": field_size,
                       "payout": payout} for i in range(num_brackets)]
             results = build_portfolio(pools, our_probs, public_probs, game_tree,
-                                     precomputed, wealth_base)
+                                     precomputed, wealth_base, n_restarts=n_restarts)
             st.session_state["brackets"] = [
                 (list(b), p, kev) for b, p, kev in results
             ]
@@ -627,7 +638,7 @@ else:
 
             semi1, arrow1, final, arrow2, semi2 = st.columns([2, 1, 2, 1, 2])
             with semi1:
-                st.markdown(f"**Semifinal 1** (East vs West)")
+                st.markdown(f"**Semifinal 1** (East vs South)")
                 st.markdown(f"- {fmt_seed(ff[0])}")
                 st.markdown(f"- {fmt_seed(ff[1])}")
             with arrow1:
@@ -640,7 +651,7 @@ else:
                 st.markdown("&nbsp;")
                 st.markdown(f"\u2190 **{fmt_seed(ff_w[1])}**")
             with semi2:
-                st.markdown(f"**Semifinal 2** (South vs Midwest)")
+                st.markdown(f"**Semifinal 2** (West vs Midwest)")
                 st.markdown(f"- {fmt_seed(ff[2])}")
                 st.markdown(f"- {fmt_seed(ff[3])}")
 

@@ -117,8 +117,8 @@ def build_game_tree():
         feeder_games[e8_game] = (s16_a, s16_b)
 
     # F4 (games 60-61) feeds from E8 (games 56-59)
-    feeder_games[60] = (56, 57)  # East vs West
-    feeder_games[61] = (58, 59)  # South vs Midwest
+    feeder_games[60] = (56, 58)  # East vs South
+    feeder_games[61] = (57, 59)  # West vs Midwest
 
     # Championship (game 62) feeds from F4
     feeder_games[62] = (60, 61)
