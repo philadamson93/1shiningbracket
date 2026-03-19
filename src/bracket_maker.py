@@ -156,12 +156,14 @@ def print_summary(results, model_probs, public_probs, game_tree):
         model_p = model_probs.get(champ, {}).get("Championship", 0) * 100
         public_p = public_probs.get(champ, {}).get("Championship", 0) * 100
         lev = model_p / public_p if public_p > 0 else 0
-        print(f"  {champ:<16} {count}/10  "
+        n = len(results)
+        print(f"  {champ:<16} {count}/{n}  "
               f"(Model:{model_p:>5.1f}% Public:{public_p:>5.1f}% Lev:{lev:.1f}x)")
 
+    n = len(results)
     print(f"\nFinal Four Exposure:")
     for team, count in sorted(ff_counts.items(), key=lambda x: -x[1])[:12]:
-        print(f"  {team:<16} {count}/10")
+        print(f"  {team:<16} {count}/{n}")
 
     r1_matchups = game_tree[0]
     upset_counts = defaultdict(int)
@@ -173,7 +175,7 @@ def print_summary(results, model_probs, public_probs, game_tree):
     if upset_counts:
         print(f"\nR1 Upsets:")
         for upset, count in sorted(upset_counts.items(), key=lambda x: -x[1]):
-            print(f"  {upset} ({count}/10)")
+            print(f"  {upset} ({count}/{n})")
 
     print(f"\nPortfolio covers {len(champ_counts)} unique champions")
 
