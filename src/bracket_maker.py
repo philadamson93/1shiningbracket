@@ -60,7 +60,12 @@ def load_pools(config_path="pools.toml"):
     pools = []
     for entry in config.get("pool", []):
         payout_list = entry.get("payout", [50, 15, 10, 7, 5, 2, 2, 1, 1])
-        payout = {i + 1: v / 100.0 for i, v in enumerate(payout_list)}
+        total = sum(payout_list)
+        # Auto-detect: if values sum to > 100, treat as dollar amounts
+        if total > 100:
+            payout = {i + 1: v / total for i, v in enumerate(payout_list)}
+        else:
+            payout = {i + 1: v / 100.0 for i, v in enumerate(payout_list)}
         pools.append({
             "name": entry.get("name", f"Pool {len(pools) + 1}"),
             "field_size": entry.get("field_size", 250),
