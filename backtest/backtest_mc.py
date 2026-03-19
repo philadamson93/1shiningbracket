@@ -45,6 +45,7 @@ PAYOUT = {1: 0.60, 2: 0.20, 3: 0.10, 4: 0.05, 5: 0.03, 6: 0.02}
 WEALTH_BASE = 1.0
 NUM_BRACKETS = 10
 N_FIELD = 10000         # Opponents for percentile scoring
+N_RESTARTS = 5          # Hill-climb restarts per bracket (balanced speed vs quality)
 
 
 def run_one_trial(model_probs, game_tree, sim_pool,
@@ -59,11 +60,19 @@ def run_one_trial(model_probs, game_tree, sim_pool,
 
     for k in range(NUM_BRACKETS):
         start = make_chalk_bracket(model_probs, game_tree)
-        bracket, _ = hill_climb(
-            start, game_tree, model_probs, sim_pool,
-            FIELD_SIZE, PAYOUT, existing_payouts, WEALTH_BASE,
-            feeds_into, locked, shuffle=True)
-        opt_brackets.append(bracket)
+
+        # Multi-start: run N_RESTARTS hill-climbs, keep best
+        best_bracket = None
+        best_ev = float("-inf")
+        for r in range(N_RESTARTS):
+            bracket, ev = hill_climb(
+                start, game_tree, model_probs, sim_pool,
+                FIELD_SIZE, PAYOUT, existing_payouts, WEALTH_BASE,
+                feeds_into, locked, shuffle=True)
+            if ev > best_ev:
+                best_bracket = bracket
+                best_ev = ev
+        opt_brackets.append(best_bracket)
 
         # Incremental update
         for si, (outcome, opp_scores) in enumerate(sim_pool):
@@ -90,7 +99,7 @@ def main():
 
     print("=" * 90)
     print(f"MONTE CARLO BACKTEST — {args.trials} trials/year, {args.pool_size} shared sims")
-    print(f"K={NUM_BRACKETS} brackets | Sigma={SIGMA} | Field={N_FIELD} opponents")
+    print(f"K={NUM_BRACKETS} brackets | R={N_RESTARTS} restarts | Sigma={SIGMA} | Field={N_FIELD} opponents")
     print("=" * 90)
 
     all_year_results = {}

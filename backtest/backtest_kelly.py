@@ -24,7 +24,9 @@ from data_loader import load_year_data, normalize_team_name
 from sim_engine import (
     simulate_tournament, make_chalk_bracket, generate_opponent,
     score_bracket_with_tree, perturb_probs, blend_probs, estimate_position,
-    bracket_to_display, get_game_prob, SCORING, ROUND_NAMES, REGIONS,
+    bracket_to_display, get_game_prob, compute_kelly_ev,
+    build_feeds_into, build_locked_games, hill_climb,
+    SCORING, ROUND_NAMES, REGIONS,
 )
 
 # =============================================================================
@@ -57,6 +59,7 @@ FIELD_SIZE = 250
 PAYOUT = {1: 0.60, 2: 0.20, 3: 0.10, 4: 0.05, 5: 0.03, 6: 0.02}
 WEALTH_BASE = 1.0
 NUM_BRACKETS = 10
+N_RESTARTS = 10             # Hill-climb restarts per bracket
 
 
 # =============================================================================
@@ -231,91 +234,29 @@ def extract_actual_outcome(post_rows, bracket, region_names, year):
 
 
 # =============================================================================
-# HILL-CLIMBING (simplified for backtest — no portfolio, just single bracket)
+# HILL-CLIMBING (uses shared sim_engine.hill_climb with restarts)
 # =============================================================================
 
-def hill_climb_single(bracket, game_tree, probs, precomputed,
-                      field_size, payout, existing_payouts, wealth_base):
-    """Hill-climb one bracket for Kelly EV."""
-    r1_matchups, feeder_games, game_round, game_points = game_tree
+def hill_climb_with_restarts(start_bracket, game_tree, probs, precomputed,
+                              field_size, payout, existing_payouts, wealth_base,
+                              n_restarts=N_RESTARTS):
+    """Multi-start hill-climb: run n_restarts times, keep best."""
+    feeds_into = build_feeds_into(game_tree)
+    locked = build_locked_games(probs, game_tree)
 
-    locked = set()
-    for g in range(32):
-        team_a, team_b = r1_matchups[g]
-        prob_a = get_game_prob(team_a, team_b, probs, "R1")
-        if prob_a > 0.85 or prob_a < 0.15:
-            locked.add(g)
+    best_bracket = None
+    best_ev = float("-inf")
 
-    current = list(bracket)
-    current_ev = kelly_ev(current, precomputed, game_tree, field_size,
-                          payout, existing_payouts, wealth_base)
+    for r in range(n_restarts):
+        bracket, ev = hill_climb(
+            start_bracket, game_tree, probs, precomputed,
+            field_size, payout, existing_payouts, wealth_base,
+            feeds_into, locked, shuffle=(r > 0))
+        if ev > best_ev:
+            best_bracket = bracket
+            best_ev = ev
 
-    for _ in range(10):
-        improved = False
-        for g in range(63):
-            if g in locked:
-                continue
-            flipped = flip_game(current, g, game_tree, probs)
-            if flipped is None:
-                continue
-            fev = kelly_ev(flipped, precomputed, game_tree, field_size,
-                           payout, existing_payouts, wealth_base)
-            if fev > current_ev:
-                current = flipped
-                current_ev = fev
-                improved = True
-        if not improved:
-            break
-    return current
-
-
-def flip_game(bracket, game_idx, game_tree, probs):
-    """Flip + cascade (same as bracket_maker.py)."""
-    r1_matchups, feeder_games, game_round, game_points = game_tree
-    new = list(bracket)
-
-    if game_idx < 32:
-        a, b = r1_matchups[game_idx]
-    else:
-        fa, fb = feeder_games[game_idx]
-        a, b = new[fa], new[fb]
-
-    new[game_idx] = b if new[game_idx] == a else a
-
-    feeds_into = defaultdict(list)
-    for g, (fa, fb) in feeder_games.items():
-        feeds_into[fa].append(g)
-        feeds_into[fb].append(g)
-
-    queue = list(feeds_into.get(game_idx, []))
-    visited = set()
-    while queue:
-        g = queue.pop(0)
-        if g in visited:
-            continue
-        visited.add(g)
-        fa, fb = feeder_games[g]
-        ta, tb = new[fa], new[fb]
-        if new[g] not in (ta, tb):
-            rd = game_round[g]
-            p = get_game_prob(ta, tb, probs, rd)
-            new[g] = ta if p >= 0.5 else tb
-        for ng in feeds_into.get(g, []):
-            queue.append(ng)
-    return new
-
-
-def kelly_ev(bracket, precomputed, game_tree, field_size, payout,
-             existing_payouts, wealth_base):
-    """Marginal Kelly EV."""
-    total = 0.0
-    for sim_idx, (outcome, opp_scores) in enumerate(precomputed):
-        score = score_bracket_with_tree(bracket, outcome, game_tree)
-        pos = estimate_position(score, opp_scores, field_size)
-        pv = payout.get(pos, 0)
-        ex = existing_payouts[sim_idx]
-        total += math.log(wealth_base + ex + pv) - math.log(wealth_base + ex)
-    return total / len(precomputed)
+    return best_bracket
 
 
 def precompute_for_year(model_probs, public_probs, sigma, M, N, game_tree):
@@ -398,7 +339,7 @@ def run_backtest():
         print(f"  Field: median={opp_median} p90={opp_p90} max={opp_max}")
 
         # Run optimizer: generate K brackets with Kelly portfolio
-        print(f"  Running optimizer (K={NUM_BRACKETS}, M={M_SIMS})...")
+        print(f"  Running optimizer (K={NUM_BRACKETS}, M={M_SIMS}, restarts={N_RESTARTS})...")
         t0 = time.time()
         precomputed = precompute_for_year(
             model_probs, public_probs, SIGMA, M_SIMS, N_OPPONENTS, game_tree)
@@ -416,7 +357,7 @@ def run_backtest():
                     existing[si] += pp.get(ps, 0)
 
             start = make_chalk_bracket(model_probs, game_tree)
-            optimized = hill_climb_single(
+            optimized = hill_climb_with_restarts(
                 start, game_tree, model_probs, precomputed,
                 FIELD_SIZE, PAYOUT, existing, WEALTH_BASE)
             opt_brackets.append(optimized)
