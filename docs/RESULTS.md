@@ -210,46 +210,31 @@ The lower wealth base says: "the marginal dollar matters more when I haven't won
 ### Final 2026 Portfolio (M=2000, N_OPP=1000, 20 restarts, wealth_base=0.3)
 
 Run March 19, 2026 with live odds (DK/BetMGM/BetRivers via The Odds API) and
-247M ESPN brackets. 20 hill-climb restarts per bracket.
+247M ESPN brackets. 20 hill-climb restarts per bracket. Corrected bracket
+structure: East vs South, West vs Midwest in Final Four.
 
 | # | Pool | N | Champion | Kelly EV | E8-E | E8-W | E8-S | E8-MW |
 |---|------|---|----------|----------|------|------|------|-------|
-| 1 | 40d_bc_y3_A | 110 | Iowa State | 0.0905 | UConn | Purdue | Illinois | Iowa State |
-| 2 | 40d_bc_y3_B | 110 | Michigan | 0.0751 | UConn | Purdue | Illinois | Michigan |
-| 3 | Madness26_A | 210 | Duke | 0.0483 | Duke | Gonzaga | Illinois | Virginia |
-| 4 | Madness26_B | 210 | Florida | 0.0409 | UConn | Arkansas | Florida | Iowa State |
-| 5 | 50d_BC_A | 78 | Florida | 0.0671 | UConn | Purdue | Florida | Iowa State |
-| 6 | 25d_BC_A | 133 | Arizona | 0.0471 | UConn | Arizona | Illinois | Iowa State |
-| 7 | MoneyPit | 525 | Houston | 0.0180 | UConn | Purdue | Houston | Iowa State |
-| 8 | Cognac_A | 124 | Michigan | 0.0440 | UConn | Gonzaga | Houston | Michigan |
-| 9 | Cognac_B | 124 | Duke | 0.0372 | Duke | Purdue | Florida | Alabama |
-| 10 | Cognac_C | 124 | Houston | 0.0361 | UConn | Purdue | Houston | Iowa State |
+| 1 | 40d_bc_y3_A | 110 | Iowa State | 0.0955 | Michigan State | Purdue | Illinois | Iowa State |
+| 2 | 40d_bc_y3_B | 110 | Florida | 0.0771 | UConn | Purdue | Florida | Iowa State |
+| 3 | Madness26_A | 210 | Michigan | 0.0512 | Michigan State | Arizona | Illinois | Michigan |
+| 4 | Madness26_B | 210 | Arizona | 0.0416 | Kansas | Arizona | Illinois | Iowa State |
+| 5 | 50d_BC_A | 78 | Michigan | 0.0737 | UConn | Purdue | Houston | Michigan |
+| 6 | 25d_BC_A | 133 | Duke | 0.0445 | Duke | Purdue | Illinois | Iowa State |
+| 7 | MoneyPit | 525 | Illinois | 0.0175 | Michigan State | Purdue | Illinois | Michigan |
+| 8 | Cognac_A | 124 | Houston | 0.0438 | UConn | Purdue | Houston | Iowa State |
+| 9 | Cognac_B | 124 | Florida | 0.0399 | UConn | Purdue | Florida | Virginia |
+| 10 | Cognac_C | 124 | Duke | 0.0379 | Duke | Purdue | Houston | Alabama |
 
-**6 unique champions:** Iowa State, Michigan (×2), Duke (×2), Florida (×2), Arizona, Houston (×2)
+**7 unique champions:** Iowa State, Florida (×2), Michigan (×2), Arizona, Duke (×2), Illinois, Houston
 
-#### Simulated Performance (2000 sims × 1000 opponents)
+#### Key patterns
 
-| Pool | N | Champion | Avg Score | Avg Pctile | Win% | Top-3% | Cash% |
-|------|---|----------|-----------|------------|------|--------|-------|
-| 40d_bc_y3_A | 110 | Iowa State | 752 | 45.1% | 6.7% | 10.3% | 15.6% |
-| 40d_bc_y3_B | 110 | Michigan | 831 | 54.4% | 4.4% | 10.3% | 20.4% |
-| Madness26_A | 210 | Duke | 776 | 45.4% | 2.6% | 5.0% | 8.8% |
-| Madness26_B | 210 | Florida | 748 | 44.6% | 2.5% | 5.5% | 12.1% |
-| 50d_BC_A | 78 | Florida | 806 | 52.0% | 5.3% | 13.4% | 22.1% |
-| 25d_BC_A | 133 | Arizona | 793 | 49.1% | 4.7% | 7.7% | 12.5% |
-| MoneyPit | 525 | Houston | 752 | 46.1% | 0.9% | 2.5% | 5.7% |
-| Cognac_A | 124 | Michigan | 818 | 52.2% | 4.0% | 7.2% | 14.9% |
-| Cognac_B | 124 | Duke | 846 | 56.1% | 2.5% | 5.2% | 12.8% |
-| Cognac_C | 124 | Houston | 749 | 44.8% | 3.3% | 7.7% | 15.3% |
-| **Average** | | | **787** | **49.0%** | **3.7%** | **7.5%** | **14.0%** |
-
-| Metric | Value | vs Random |
-|--------|-------|-----------|
-| Avg percentile | 49.0% | ~50% (neutral on score) |
-| Avg win rate | 3.7% per bracket | 3-4× random |
-| Avg top-3 rate | 7.5% | ~3× random |
-| Avg cash rate | 14.0% | ~2× random |
-| **P(≥1 pool win)** | **31.6%** | ~5-10% for 10 random brackets |
+- **Purdue** West E8 in 8/10 — strongest leverage play in the bracket (2.12x)
+- **Illinois** South E8 in 5/10 — 3.0x leverage as champion for MoneyPit (N=525)
+- **Iowa State** MW E8 in 5/10 — 1.58x leverage
+- More R1 upsets than prior run: Utah State/Villanova (8/10), Iowa/Clemson (6/10),
+  Missouri/Miami (5/10), VCU/UNC (2/10), plus scattered Akron, Texas, Texas A&M picks
 
 ---
 
